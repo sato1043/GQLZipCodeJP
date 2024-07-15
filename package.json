@@ -1,0 +1,29 @@
+{
+  "name": "gqlzipcodejp",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "exit 1",
+    "dev": "node ./src",
+    "lint": "run-p lint:*",
+    "lint:md": "markdownlint-cli2 \"**/*.md\" && textlint \"**/*.md\"",
+    "lint:es": "exit 0",
+    "vercheck": "grep -E '\"[~^]' package.json; test $? -eq 1",
+    "depcheck": "depcheck",
+    "ncu": "npx -p npm-check-updates --yes --prefer-online -- ncu --upgrade --install always --interactive"
+  },
+  "dependencies": {
+    "cookie-parser": "1.4.6",
+    "debug": "4.3.5",
+    "express": "4.19.2",
+    "morgan": "1.10.0"
+  },
+  "devDependencies": {
+    "depcheck": "1.4.7",
+    "markdownlint-cli2": "0.13.0",
+    "npm-run-all": "4.1.5",
+    "textlint": "14.0.4",
+    "textlint-rule-preset-ja-technical-writing": "10.0.1",
+    "textlint-rule-preset-japanese": "10.0.3"
+  }
+}

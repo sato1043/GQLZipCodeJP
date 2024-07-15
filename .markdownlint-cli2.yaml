@@ -1,0 +1,69 @@
+#
+# An example .markdownlint-cli2.yaml file
+#
+
+# Fix any fixable errors
+fix: true
+
+# Define glob expressions to use (only valid at root)
+#globs:
+#  - "**/*.md" # ここにファイル指定すると pre-commit でもそれらすべてを確認してしまう
+
+# Ignore files referenced by .gitignore (only valid at root)
+gitignore: true
+
+# Define glob expressions to ignore
+ignores:
+  - "node_modules"
+
+# Rules
+# https://github.com/DavidAnson/markdownlint/blob/v0.32.1/README.md#rules--aliases
+# https://github.com/DavidAnson/markdownlint/blob/main/doc/Rules.md
+config:
+  default: true
+  heading-style:
+    style: setext_with_atx
+  no-trailing-spaces: false
+  no-multiple-blanks:
+    maximum: 2
+  line-length:
+    code_blocks: false
+    tables: false
+  blanks-around-headings:
+    lines_above: 1
+    lines_below: 1
+  no-duplicate-heading:
+    sibling_only: true
+
+# Include a custom rule package
+#customRules:
+#  - markdownlint-rule-titlecase
+
+# Define a custom front matter pattern
+frontMatter: "<head>[^]*<\/head>"
+
+# Use a plugin to recognize math
+#markdownItPlugins:
+#  -
+#    - "@iktakahiro/markdown-it-katex"
+
+# Additional paths to resolve module locations from
+#modulePaths:
+#  - "./modules"
+
+# Disable banner message on stdout (only valid at root)
+noBanner: true
+
+# Disable inline config comments
+noInlineConfig: false
+
+# Disable progress on stdout (only valid at root)
+noProgress: true
+
+# Use a specific formatter (only valid at root)
+#outputFormatters:
+#  -
+#    - markdownlint-cli2-formatter-default
+
+# Show found files on stdout (only valid at root)
+showFound: true

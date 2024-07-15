@@ -1,0 +1,56 @@
+# <https://github.com/evilmartians/lefthook>
+# <https://github.com/evilmartians/lefthook/blob/master/docs/configuration.md>
+
+# 利用前にバイナリをインストール （```brew install lefthook``` など）
+# <https://github.com/evilmartians/lefthook/blob/master/docs/install.md>
+# 2024/7 npm経由が動かせなかった
+
+# フックは lefthook-local.yml でスキップ可能
+# ```lefthook-local.yml
+# pre-commit:
+#   commands:
+#     prettier:
+#       skip: true
+# ```
+
+colors: false
+no_tty: true
+output:
+  - failure
+  - skips
+
+pre-push:
+  parallel: true
+  commands:
+#   packages-audit
+#     tags: frontend security
+#     run: yarn audit
+#   gems-audit
+#     tags: backend security
+#     run: bundle audit
+
+pre-commit:
+  parallel: true
+  commands:
+    check-packages:
+      glob: 'package.json'
+      stage_fixed: true
+      run: |
+        npm run vercheck
+        npm run depcheck
+    lint-md:
+      glob: '*.{md}'
+      stage_fixed: true
+      run: |
+        markdownlint-cli2 {staged_files}
+        textlint {staged_files}
+      skip:
+        - merge
+        - rebase
+#    eslint:
+#      glob: "*.{js,ts,jsx,tsx}"
+#      run: |
+#        npm run lint:es {staged_files}
+#  scripts:
+#    any.js:
+#      runner: node
