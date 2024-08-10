@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
+    "postinstall": "(cd scripts/zipcode-json/data ; sh _extract-data.sh)",
     "start": "exit 1",
     "dev": "node ./src",
     "lint": "run-p lint:*",
