@@ -4,3 +4,4 @@ rules:
     max-kanji-continuous-len:
       allow:
         - "倍精度浮動小数点数"
+        - "自己署名証明書"

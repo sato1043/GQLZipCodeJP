@@ -3,9 +3,9 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "postinstall": "(cd scripts/zipcode-json/data ; sh _extract-data.sh)",
+    "postinstall": "(cd scripts/zipcode-json/data ; bash _extract-data.sh) ; (cd scripts/crt@localhost ; bash gencrt.sh)",
     "start": "exit 1",
-    "dev": "DEBUG=GQLZipCodeJP* npx tsx watch ./src",
+    "dev": "NODE_TLS_REJECT_UNAUTHORIZED=0 DEBUG=GQLZipCodeJP* tsx watch ./src",
     "lint": "run-s lint:*",
     "lint:md": "markdownlint-cli2 \"**/*.md\" && textlint \"**/*.md\"",
     "lint:ts": "tsc --noEmit",
