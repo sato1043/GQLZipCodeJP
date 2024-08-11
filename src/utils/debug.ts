@@ -1,3 +1,3 @@
-import packageJson from '../../package.json';
 import debug from "debug";
-export default debug(`${packageJson.name}`);
+import { PACKAGE_NAME } from "../consts";
+export default debug(`${PACKAGE_NAME}`);
