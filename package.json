@@ -6,16 +6,18 @@
     "postinstall": "(cd scripts/zipcode-json/data ; sh _extract-data.sh)",
     "start": "exit 1",
     "dev": "node ./src",
-    "lint": "run-p lint:*",
+    "lint": "run-s lint:*",
     "lint:md": "markdownlint-cli2 \"**/*.md\" && textlint \"**/*.md\"",
     "lint:es": "exit 0",
-    "vercheck": "grep -E '\"[~^]' package.json; test $? -eq 1",
-    "depcheck": "depcheck",
-    "ncu": "npx -p npm-check-updates --yes --prefer-online -- ncu --upgrade --install always --interactive"
+    "lint:pkgver-desc": "grep -E '\"[~^]' package.json; test $? -eq 1",
+    "mnt:pkg:add": "npm install --save-exact",
+    "mnt:pkg:add-dev": "npm install --save-dev --save-exact",
+    "mnt:pkg:depcheck": "depcheck",
+    "mnt:pkg:updcheck": "npx -p npm-check-updates --yes --prefer-online -- ncu --upgrade --install always --interactive"
   },
   "dependencies": {
     "cookie-parser": "1.4.6",
-    "debug": "4.3.5",
+    "debug": "4.3.6",
     "express": "4.19.2",
     "morgan": "1.10.0"
   },
@@ -23,7 +25,7 @@
     "depcheck": "1.4.7",
     "markdownlint-cli2": "0.13.0",
     "npm-run-all": "4.1.5",
-    "textlint": "14.0.4",
+    "textlint": "14.0.5",
     "textlint-rule-preset-ja-technical-writing": "10.0.1",
     "textlint-rule-preset-japanese": "10.0.3"
   }

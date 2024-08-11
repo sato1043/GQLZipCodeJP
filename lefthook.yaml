@@ -32,13 +32,15 @@ pre-push:
 pre-commit:
   parallel: true
   commands:
-    check-packages:
+    lint_pkgver-desc:
       glob: 'package.json'
       stage_fixed: true
       run: |
-        npm run vercheck
-        npm run depcheck
-    lint-md:
+        npm run lint:pkgver-desc
+      skip:
+        - merge
+        - rebase
+    lint_md:
       glob: '*.{md}'
       stage_fixed: true
       run: |

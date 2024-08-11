@@ -11,11 +11,12 @@
   - `npm ci`
 
 - パッケージ管理
-  - `npm run vercheck`
-  - `npm run depcheck`
-  - `npm run ncu`
+  - `npm run mnt:pkg:add-dev <PACKAGE>`
+  - `npm run mnt:pkg:add <PACKAGE>`
+  - `npm run mnt:pkg:depcheck`
+  - `npm run mnt:pkg:updcheck`
 
-- リンター
+- リント
   - `npm run lint`
 
 
