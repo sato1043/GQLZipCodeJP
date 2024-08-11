@@ -16,6 +16,13 @@
   - `npm run mnt:pkg:depcheck`
   - `npm run mnt:pkg:updcheck`
 
+- TS設定
+  - トランスパイラは tsc
+    - トランスパイルターゲットは es2021
+    - モジュール形式は commonjs
+    - 出力先は ./dist
+  - 逐次実行のランタイムは tsx
+
 - リント
   - `npm run lint`
 

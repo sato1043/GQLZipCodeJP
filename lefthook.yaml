@@ -49,6 +49,14 @@ pre-commit:
       skip:
         - merge
         - rebase
+    lint-ts:
+      glob: "*.{ts,tsx}"
+      stage_fixed: true
+      run: |
+        npm run lint:ts
+      skip:
+        - merge
+        - rebase
 #    eslint:
 #      glob: "*.{js,ts,jsx,tsx}"
 #      run: |
