@@ -1,1 +1,1 @@
-ignores: ["textlint-rule-*"]
+ignores: ["textlint-rule-*", "@types/*"]

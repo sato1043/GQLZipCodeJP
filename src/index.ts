@@ -3,20 +3,26 @@
 import http from 'http';
 import https from 'https';
 import fs from 'fs';
-import debug from './utils/debug';
+import { createTerminus } from '@godaddy/terminus';
+import { pick } from 'lodash';
+
 import app from './app';
+import conf from './conf'
+import util from 'util';
+import process from 'process';
 
-const host = process.env.HOST || 'localhost';
-const port = normalizePort(process.env.PORT || '3000');
-app.set('port', port);
-
+const { host , port } = conf.app;
 const certKey = `scripts/crt@${host}/${host}.key`;
 const certCrt = `scripts/crt@${host}/${host}.crt`;
 const hasCertificates = fs.existsSync(certKey) && fs.existsSync(certCrt);
-if (!hasCertificates) {
-  console.error(`certifications not found`);
+if (conf.app.listenOnHttps && !hasCertificates) {
+  console.error(`cert not found`);
+  process.exit(1);
 }
-const server = !hasCertificates
+
+app.set('port', port);
+
+const httpServer = !conf.app.listenOnHttps
   ? http.createServer(app)
   : https.createServer({
     key: fs.readFileSync(certKey),
@@ -24,17 +30,25 @@ const server = !hasCertificates
     requestCert: false,
     rejectUnauthorized: false,
   }, app);
-server.listen(port, host);
-server.on('error', onError);
-server.on('listening', onListening);
 
-// Normalize a port into a number, string, or false.
-function normalizePort(val: string) {
-  const port = parseInt(val, 10);
-  return !Number.isNaN(port) && 0 <= port ? port : undefined;
-}
+createTerminus(
+  httpServer,
+  Object.freeze({
+    logger: console.info,
+    healthChecks: { [conf.app.healthCheckEndPointPath]: async () => 'UP' },
+    signals: ['SIGTERM', 'SIGINT', 'SIGHUP'],
+    timeout: conf.app.gracefulShutdownTimeoutSec * 1000,
+    onShutdown,
+  }),
+);
 
-// Event listener for HTTP server "error" event.
+httpServer
+  .listen(port, host)
+  .on('error', onError)
+  .on('listening', onListening);
+
+// ===
+
 function onError(error: NodeJS.ErrnoException) {
   if (error.syscall !== 'listen') {
     throw error;
@@ -53,7 +67,28 @@ function onError(error: NodeJS.ErrnoException) {
   }
 }
 
-// event listener for HTTP server "listening" event.
 function onListening() {
-  debug(`listening on http${hasCertificates ? 's':''}://${host}:${port}`);
+  const proto = conf.app.listenOnHttps ? 'https' : 'http';
+  console.info(`listening on ${proto}://${host}:${port} in NODE_ENV='${conf.env}'`);
+  if (conf.isDevelopment) {
+    console.log(
+      util.inspect(
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        require('express-list-endpoints')(app).map((_: any) => pick(_, 'methods', 'path')),
+        { showHidden: false, depth: null, colors: true },
+      ),
+    );
+    console.log(
+      util.inspect(conf.apikey.codeList,
+        { showHidden: false, depth: null, colors: true }),
+    );
+  }
+}
+
+async function onShutdown() {
+  console.info('server is starting cleanup');
+  // ...
+  // here my cleanup code
+  // ...
+  console.info('cleanup finished, shutting down');
 }
