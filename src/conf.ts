@@ -1,5 +1,6 @@
 import process from 'process'
 
+// eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
 Error.stackTraceLimit = Number(process.env.ERROR_STACK_LEN || 4)
 
 // prettier-ignore
@@ -40,9 +41,12 @@ const conf = {
   isTest: process.env.NODE_ENV === 'test',
 
   app: {
+    // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
     host: process.env.HOST || 'localhost',
-    port: normalizePort(process.env.PORT) || 3000,
+    port: normalizePort(process.env.PORT) ?? 3000,
+    // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
     healthCheckEndPointPath: process.env.HEALTHCHECK_ENDPOINT_PATH || '/health',
+    // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
     gracefulShutdownTimeoutSec: Number(process.env.GRACEFUL_SHUTDOWN_TIMEOUT_SEC || 10),
     listenOnHttps: process.env.LISTEN_ON_HTTPS === 'true',
   },
@@ -50,6 +54,7 @@ const conf = {
   apikey: {
     passPhrase: process.env.APIKEY_PASSPHRASE || '',
     salt: process.env.APIKEY_SALT || '',
+    // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
     codeList: JSON.parse(process.env.APIKEY_CODELIST || '[]') as string[],
   },
 

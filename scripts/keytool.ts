@@ -19,28 +19,38 @@
  *   - 通常運用でAPIキーを手元で解読する必要はありません
  */
 
-// @ts-ignore
-import getopts from 'getopts'
 import * as uuid from 'uuid'
-const options = getopts(process.argv.slice(2))
-
 import { decrypt, encrypt } from '../src/utils/crypto.util.ts'
+import isString from 'lodash/isString.js';
+//@ts-expect-error esModuleInterop:true にして default を付加してある
+import getopts from 'getopts'
+import type { ParsedOptions } from 'getopts'
 
-const passphrase = options['p'] || process.env.APIKEY_PASSPHRASE || uuid.v4()
-const salt = options['s'] || process.env.APIKEY_SALT || uuid.v4()
+// eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-assignment
+const options: ParsedOptions = getopts(process.argv.slice(2))
+const optionP = isString(options.p) ? options.p : undefined
+const optionS = isString(options.s) ? options.s : undefined
+const optionE = isString(options.e) ? options.e : undefined
+const optionD = isString(options.d) ? options.d : undefined
+
+// eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
+const passphrase = optionP || process.env.APIKEY_PASSPHRASE || uuid.v4()
+// eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
+const salt = optionS || process.env.APIKEY_SALT || uuid.v4()
 if (!passphrase || !salt) {
   console.error(`error: empty passphrase or salt`)
   process.exit(2)
 }
 
-if (options['i']) {
+if (options.i) {
   const code = uuid.v4();
   console.log(`APIKEY_PASSPHRASE=${passphrase}`)
   console.log(`APIKEY_SALT=${salt}`)
   console.log(`APIKEY_CODELIST=["${code}"]`)
   console.log(`TEST_APIKEY=${encrypt(passphrase, salt, code)}`)
-} else if (options['e']) {
-  const code = uuid.v4() || options['e']
+} else if (options.e) {
+  // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
+  const code = optionE || uuid.v4()
   console.log(
     JSON.stringify(
       {
@@ -53,8 +63,12 @@ if (options['i']) {
       2,
     ),
   )
-} else if (options['d']) {
-  console.log(decrypt(passphrase, salt, options['d']))
+} else if (options.d) {
+  if (optionD) {
+    console.log(decrypt(passphrase, salt, optionD))
+  } else {
+    console.error('error: apikey not specified')
+  }
 } else {
   console.error('error: no method specified: (use -d or -e)')
 }

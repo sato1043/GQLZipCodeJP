@@ -35,6 +35,7 @@ createTerminus(
   httpServer,
   Object.freeze({
     logger: console.info,
+    // eslint-disable-next-line @typescript-eslint/require-await
     healthChecks: { [conf.app.healthCheckEndPointPath]: async () => 'UP' },
     signals: ['SIGTERM', 'SIGINT', 'SIGHUP'],
     timeout: conf.app.gracefulShutdownTimeoutSec * 1000,
@@ -71,6 +72,7 @@ function onListening() {
   const proto = conf.app.listenOnHttps ? 'https' : 'http';
   console.info(`listening on ${proto}://${host}:${port} in NODE_ENV='${conf.env}'`);
   if (conf.isDevelopment) {
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
     (async () => {
       const listEndpoints = await import('express-list-endpoints');
       console.log(
@@ -87,6 +89,7 @@ function onListening() {
   }
 }
 
+// eslint-disable-next-line @typescript-eslint/require-await
 async function onShutdown() {
   console.info('server is starting cleanup');
   // ...
