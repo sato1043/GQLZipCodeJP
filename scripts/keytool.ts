@@ -19,11 +19,12 @@
  *   - 通常運用でAPIキーを手元で解読する必要はありません
  */
 
+// @ts-ignore
 import getopts from 'getopts'
 import * as uuid from 'uuid'
 const options = getopts(process.argv.slice(2))
 
-import { decrypt, encrypt } from '../src/utils/crypto.util'
+import { decrypt, encrypt } from '../src/utils/crypto.util.ts'
 
 const passphrase = options['p'] || process.env.APIKEY_PASSPHRASE || uuid.v4()
 const salt = options['s'] || process.env.APIKEY_SALT || uuid.v4()
@@ -34,7 +35,8 @@ if (!passphrase || !salt) {
 
 if (options['i']) {
   const code = uuid.v4();
-  console.log(`APIKEY_PASSPHRASE=${passphrase}\nAPIKEY_SALT=${salt}`)
+  console.log(`APIKEY_PASSPHRASE=${passphrase}`)
+  console.log(`APIKEY_SALT=${salt}`)
   console.log(`APIKEY_CODELIST=["${code}"]`)
   console.log(`TEST_APIKEY=${encrypt(passphrase, salt, code)}`)
 } else if (options['e']) {

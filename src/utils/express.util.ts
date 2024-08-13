@@ -1,6 +1,7 @@
 import { NextFunction, Request, RequestHandler, Response } from 'express'
 import CreateHttpError from 'http-errors'
-import { isArray, isString } from 'lodash';
+import isArray from 'lodash/isArray.js';
+import isString from 'lodash/isString.js';
 
 export interface PromisedRequestHandler {
   (req: Request, res: Response, next: NextFunction): Promise<void>

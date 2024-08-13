@@ -4,10 +4,10 @@ import http from 'http';
 import https from 'https';
 import fs from 'fs';
 import { createTerminus } from '@godaddy/terminus';
-import { pick } from 'lodash';
+import pick from 'lodash/pick.js';
 
-import app from './app';
-import conf from './conf'
+import app from './app.ts';
+import conf from './conf.ts'
 import util from 'util';
 import process from 'process';
 
@@ -71,17 +71,19 @@ function onListening() {
   const proto = conf.app.listenOnHttps ? 'https' : 'http';
   console.info(`listening on ${proto}://${host}:${port} in NODE_ENV='${conf.env}'`);
   if (conf.isDevelopment) {
-    console.log(
-      util.inspect(
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        require('express-list-endpoints')(app).map((_: any) => pick(_, 'methods', 'path')),
-        { showHidden: false, depth: null, colors: true },
-      ),
-    );
-    console.log(
-      util.inspect(conf.apikey.codeList,
-        { showHidden: false, depth: null, colors: true }),
-    );
+    (async () => {
+      const listEndpoints = await import('express-list-endpoints');
+      console.log(
+        util.inspect(
+          listEndpoints.default(app).map((_) => pick(_, 'methods', 'path')),
+          { showHidden: false, depth: null, colors: true },
+        ),
+      );
+      console.log(
+        util.inspect(conf.apikey.codeList,
+          { showHidden: false, depth: null, colors: true }),
+      );
+    })();
   }
 }
 

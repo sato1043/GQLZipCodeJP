@@ -6,10 +6,11 @@ import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import path from 'path';
 
-import conf from './conf';
-import { decrypt } from './utils/crypto.util';
-import indexRouter from './routes';
-import { Error400, Error401, Error404, extractStringFrom } from './utils/express.util';
+import conf from './conf.ts';
+import { decrypt } from './utils/crypto.util.ts';
+import { __dirname } from './utils/file.util.ts';
+import indexRouter from './routes/index.ts';
+import { Error400, Error401, Error404, extractStringFrom } from './utils/express.util.ts';
 
 const app = express();
 

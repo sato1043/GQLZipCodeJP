@@ -1,5 +1,5 @@
 import request from 'supertest';
-import app from './app';
+import app from './app.ts';
 
 describe("GET /", () => {
   it("returns 404 with a valid x-api-key", () => {
@@ -31,13 +31,13 @@ describe("GET /api/v1", () => {
 describe("GET /api/v1/hello", () => {
   it("returns 400 without x-api-key", () => {
     return request(app)
-      .get("/")
+      .get("/api/v1/hello")
       // .set({ 'X-API-Key': ... })
       .expect(400);
   });
   it("returns 401 with a bad x-api-key", () => {
     return request(app)
-      .get("/")
+      .get("/api/v1/hello")
       .set({ 'X-API-Key': 'foobar' })
       .expect(401);
   });
