@@ -21,7 +21,7 @@
 
 import * as uuid from 'uuid'
 import { decrypt, encrypt } from '../src/utils/crypto.util.ts'
-import isString from 'lodash/isString.js';
+import isString from 'lodash/isString.js'
 //@ts-expect-error esModuleInterop:true にして default を付加してある
 import getopts from 'getopts'
 import type { ParsedOptions } from 'getopts'
@@ -43,7 +43,7 @@ if (!passphrase || !salt) {
 }
 
 if (options.i) {
-  const code = uuid.v4();
+  const code = uuid.v4()
   console.log(`APIKEY_PASSPHRASE=${passphrase}`)
   console.log(`APIKEY_SALT=${salt}`)
   console.log(`APIKEY_CODELIST=["${code}"]`)

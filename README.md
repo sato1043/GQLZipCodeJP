@@ -31,6 +31,10 @@
 - リント
   - `npm run lint`
 
+- コミット
+  - pre-commit は検査のみ行う（fix はプログラマが行う）
+  - lefthook.yaml 変更時は `npm run mnt:requisite:lefthook` を再実行
+
 - dev環境
   - `npm run dev` (tsxをランタイムにTSを配信)
   - <https://localhost:3000> を自己署名証明書でホスト 

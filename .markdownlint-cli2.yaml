@@ -3,7 +3,7 @@
 #
 
 # Fix any fixable errors
-fix: true
+fix: false
 
 # Define glob expressions to use (only valid at root)
 #globs:
@@ -14,7 +14,7 @@ gitignore: true
 
 # Define glob expressions to ignore
 ignores:
-  - "node_modules"
+  - 'node_modules'
 
 # Rules
 # https://github.com/DavidAnson/markdownlint/blob/v0.32.1/README.md#rules--aliases

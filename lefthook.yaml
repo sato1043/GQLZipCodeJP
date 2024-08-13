@@ -34,7 +34,6 @@ pre-commit:
   commands:
     lint_pkgver-desc:
       glob: 'package.json'
-      stage_fixed: true
       run: |
         npm run lint:pkgver-desc
       skip:
@@ -42,25 +41,28 @@ pre-commit:
         - rebase
     lint_md:
       glob: '*.{md}'
-      stage_fixed: true
-      run: |
-        markdownlint-cli2 {staged_files}
-        textlint {staged_files}
+      run: markdownlint-cli2 {staged_files} && textlint {staged_files}
       skip:
         - merge
         - rebase
-    lint-ts:
-      glob: "*.{ts,tsx}"
-      stage_fixed: true
-      run: |
-        npm run lint:ts
+    lint_prettier:
+      glob: '*.{js,ts,json,yaml}'
+      run: prettier --check {staged_files}
       skip:
         - merge
         - rebase
-#    eslint:
-#      glob: "*.{js,ts,jsx,tsx}"
-#      run: |
-#        npm run lint:es {staged_files}
+    lint_ts:
+      glob: '*.{js,ts}'
+      run: tsc --noEmit
+      skip:
+        - merge
+        - rebase
+    lint_es:
+      glob: '*.{js,ts}'
+      run: eslint {staged_files}
+      skip:
+        - merge
+        - rebase
 #  scripts:
 #    any.js:
 #      runner: node

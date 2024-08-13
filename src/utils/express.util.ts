@@ -1,7 +1,7 @@
 import { NextFunction, Request, RequestHandler, Response } from 'express'
 import CreateHttpError from 'http-errors'
-import isArray from 'lodash/isArray.js';
-import isString from 'lodash/isString.js';
+import isArray from 'lodash/isArray.js'
+import isString from 'lodash/isString.js'
 
 export type PromisedRequestHandler = (req: Request, res: Response, next: NextFunction) => Promise<void>
 
@@ -19,7 +19,8 @@ export const Error422 = new CreateHttpError.UnprocessableEntity(`Unprocessable E
 export const Error500 = new CreateHttpError.InternalServerError(`Failed to Proceed`)
 export const Error501 = new CreateHttpError.NotImplemented(`Not Implemented`)
 
-export function extractStringFrom(anyValue: any) { // eslint-disable-line @typescript-eslint/no-explicit-any
-  const noneArray = isArray(anyValue) ? anyValue[0] : anyValue; // eslint-disable-line  @typescript-eslint/no-unsafe-assignment
-  return isString(noneArray) ? noneArray : undefined;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function extractStringFrom(anyValue: any) {
+  const noneArray = isArray(anyValue) ? anyValue[0] : anyValue // eslint-disable-line  @typescript-eslint/no-unsafe-assignment
+  return isString(noneArray) ? noneArray : undefined
 }

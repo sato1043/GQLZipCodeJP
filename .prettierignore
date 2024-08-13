@@ -1,2 +1,8 @@
-.git*
+# Ignore artifacts:
+dist
+build
+coverage
 node_modules
+.git*
+tsconfig*
+*.md

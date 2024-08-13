@@ -1,2 +1,2 @@
 // stick timezone
-process.env.TZ ??= 'Asia/Tokyo';
+process.env.TZ ??= 'Asia/Tokyo'

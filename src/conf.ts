@@ -58,15 +58,16 @@ const conf = {
     codeList: JSON.parse(process.env.APIKEY_CODELIST || '[]') as string[],
   },
 
+  // prettier-ignore
   ...(process.env.NODE_ENV === 'production' ? production
     : process.env.NODE_ENV === 'test' ? test
-    : development),
-};
+      : development),
+}
 
 export default conf
 
 function normalizePort(val: string | undefined) {
-  if (val === undefined) return undefined;
-  const port = parseInt(val, 10);
-  return !Number.isNaN(port) && 0 <= port ? port : undefined;
+  if (val === undefined) return undefined
+  const port = parseInt(val, 10)
+  return !Number.isNaN(port) && 0 <= port ? port : undefined
 }

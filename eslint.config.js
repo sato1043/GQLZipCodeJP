@@ -1,9 +1,11 @@
 // @ts-check
 
-import eslint from '@eslint/js';
-import tseslint from 'typescript-eslint';
-import globals from 'globals';
+import eslint from '@eslint/js'
+import tseslint from 'typescript-eslint'
+import globals from 'globals'
+import eslintConfigPrettier from 'eslint-config-prettier'
 
+// prettier-ignore
 export default tseslint.config(
   eslint.configs.recommended,
   ...tseslint.configs.recommendedTypeChecked,
@@ -20,4 +22,6 @@ export default tseslint.config(
       },
     },
   },
-);
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+  eslintConfigPrettier,
+)

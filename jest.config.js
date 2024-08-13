@@ -4,4 +4,4 @@ export default {
   testEnvironment: 'node',
   testMatch: ['**/?(*.)+(spec).+(ts|tsx|js|jsx)'],
   setupFilesAfterEnv: ['./jest.setup.js'],
-};
+}
