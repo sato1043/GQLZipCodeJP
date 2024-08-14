@@ -68,6 +68,12 @@ pre-commit:
       skip:
         - merge
         - rebase
+    lint_dep:
+      glob: '*.{js,ts}'
+      run: depcruise {staged_files}
+      skip:
+        - merge
+        - rebase
 #  scripts:
 #    any.js:
 #      runner: node

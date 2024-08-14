@@ -17,6 +17,7 @@ CONTENTS;
   - git v2
   - node v22
   - `brew install lefthook`
+  - `brew install graphviz`
   - `npm ci`
   - `npm run mnt:add-requisites`
   - IDE は JetBrains IntelliJ IDEA Ultimate を使用

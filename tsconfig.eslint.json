@@ -9,7 +9,8 @@
     "jest.config.js",
     "jest.setup.js",
     "prettier.config.js",
-    "commitlint.config.js"
+    "commitlint.config.js",
+    ".dependency-cruiser.cjs"
   ],
   "exclude": [
   ],

@@ -3,4 +3,5 @@ ignores: [
   "@types/*",
   "ts-jest",
   "@commitlint/*",
+  "dependency-cruiser",
 ]

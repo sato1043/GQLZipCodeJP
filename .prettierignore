@@ -6,3 +6,4 @@ node_modules
 .git*
 tsconfig*
 *.md
+.dependency-cruiser.cjs
