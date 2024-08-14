@@ -1,6 +1,15 @@
 郵便番号API
 ==========
 
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+CONTENTS;
+
+- [開発](#%E9%96%8B%E7%99%BA)
+- [ライセンス](#%E3%83%A9%E3%82%A4%E3%82%BB%E3%83%B3%E3%82%B9)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 開発
 -----
 
@@ -31,6 +40,9 @@
 - リント
   - `npm run lint`
 
+- ドキュメント
+  - README でレベル〜３のセクション追加の際には目次再生成 `npm run mnt:doc:toc`
+
 - コミット
   - pre-commit は検査のみ行う（fix はプログラマが行う）
   - lefthook.yaml 変更時は `npm run mnt:requisite:lefthook` を再実行
@@ -43,5 +55,11 @@
   - `npm run mnt:api:keygen`
   - 発行された code を管理台帳に記録して .env の APIKEY_CODELIST に追記(JSON文字列)
   - 発行された apiKey を利用者に提示
+
+
+ライセンス
+---------
+
+- GQLZipCodeJP は [MIT license](LICENSE) のもと提供
 
 END
