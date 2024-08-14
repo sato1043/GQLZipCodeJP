@@ -19,6 +19,7 @@ CONTENTS;
   - `brew install lefthook`
   - `npm ci`
   - `npm run mnt:add-requisites`
+  - IDE は JetBrains IntelliJ IDEA Ultimate を使用
 
 - パッケージ管理
   - `npm run mnt:pkg:add-dev <PACKAGE>`
@@ -37,6 +38,16 @@ CONTENTS;
     - 相対ディレクトリパスおよび拡張子までを含めた完全なファイル名の指定
     - パスエイリアス・compilerOptions.(paths|baseUrl) 利用しない
 
+- 編集
+  - 大きすぎるぐらいのモニターを大きめポイントのソースコード用フォントで使う
+  - コードフォルディングでデフォルト「すべて折りたたみ」する
+  - タグジャンプで移動する。find in files する
+  - テキストの複製はコピー＆ペーストする。 IDE のリファクタ機能と AI 補完を使う。できるときは自分で入力しない
+  - 成果物をひとつの構造物と見なし、WBSを前提にして、ひとつ上の抽象度で意味のあるまとまりを作る
+  - 分割は WBS のうえの意味を根拠におこなう。手段で分割しない
+  - WBS 自体、そのどの部分なのか、根拠・用途・仕様・スペックをざっと記録する
+  - まずざっとスペックを書いて合意確認し、実装し、テスト・リファクタする（テスト・リファクタも予定工数に含める）
+
 - リント
   - `npm run lint`
 
@@ -46,6 +57,12 @@ CONTENTS;
 - コミット
   - pre-commit は検査のみ行う（fix はプログラマが行う）
   - lefthook.yaml 変更時は `npm run mnt:requisite:lefthook` を再実行
+  - メッセージ
+    - 機械処理のために[Conventional Commits Specification](https://www.conventionalcommits.org/en/v1.0.0/#summary)へ倣う
+    - メッセージ１行目をメッセージヘッドと呼ぶ。書式「<コミットタイプ>: 概要テキスト」
+    - メッセージヘッド冒頭に[コミットタイプ](https://github.com/conventional-changelog/commitlint/tree/master/@commitlint/config-conventional#rules)を含める
+    - コミットタイプは以下から； build chore ci docs feat fix perf refactor revert style test
+    - (必要に応じて)空行を挟んでから詳細テキスト
 
 - dev環境
   - `npm run dev` (tsxをランタイムにTSを配信)

@@ -29,6 +29,11 @@ pre-push:
 #     tags: backend security
 #     run: bundle audit
 
+commit-msg:
+  commands:
+    commit-lint:
+      run: commitlint --edit {1}
+
 pre-commit:
   parallel: true
   commands:
