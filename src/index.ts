@@ -43,6 +43,8 @@ createTerminus(
   }),
 )
 
+console.time('server set up in')
+
 // prettier-ignore
 httpServer
   .listen(port, host)
@@ -72,12 +74,12 @@ function onError(error: NodeJS.ErrnoException) {
 function onListening() {
   const proto = conf.app.listenOnHttps ? 'https' : 'http'
   console.info(`listening on ${proto}://${host}:${port} in NODE_ENV='${conf.env}'`)
+  console.timeEnd('server set up in')
   if (conf.isDevelopment) {
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     ;(async () => {
       const listEndpoints = await import('express-list-endpoints')
       inspect(listEndpoints.default(app).map((_) => pick(_, 'methods', 'path')))
-      inspect(conf.apikey.codeList)
     })()
   }
 }

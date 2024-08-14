@@ -1,6 +1,8 @@
-import process from 'process'
+/* eslint-disable @typescript-eslint/prefer-nullish-coalescing */
 
-// eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
+import process from 'process'
+import { inspect } from './utils/debug.util.ts'
+
 Error.stackTraceLimit = Number(process.env.ERROR_STACK_LEN || 4)
 
 // prettier-ignore
@@ -41,20 +43,20 @@ const conf = {
   isTest: process.env.NODE_ENV === 'test',
 
   app: {
-    // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
+    listenOnHttps: process.env.LISTEN_ON_HTTPS === 'true',
+    proto: process.env.LISTEN_ON_HTTPS === 'true' ? 'https' : 'http',
     host: process.env.HOST || 'localhost',
     port: normalizePort(process.env.PORT) ?? 3000,
-    // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
+    origin: '',
     healthCheckEndPointPath: process.env.HEALTHCHECK_ENDPOINT_PATH || '/health',
-    // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
     gracefulShutdownTimeoutSec: Number(process.env.GRACEFUL_SHUTDOWN_TIMEOUT_SEC || 10),
-    listenOnHttps: process.env.LISTEN_ON_HTTPS === 'true',
+    allowOrigins: JSON.parse(process.env.ALLOW_ORIGINS || '[]') as string[],
+    allowAllServers: process.env.ALLOW_ALL_SERVERS === 'true',
   },
 
   apikey: {
     passPhrase: process.env.APIKEY_PASSPHRASE || '',
     salt: process.env.APIKEY_SALT || '',
-    // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
     codeList: JSON.parse(process.env.APIKEY_CODELIST || '[]') as string[],
   },
 
@@ -62,6 +64,13 @@ const conf = {
   ...(process.env.NODE_ENV === 'production' ? production
     : process.env.NODE_ENV === 'test' ? test
       : development),
+}
+
+conf.app.origin = `${conf.app.proto}://${conf.app.host}:${conf.app.port}`
+conf.app.allowOrigins.push(conf.app.origin)
+
+if (conf.isDevelopment || conf.isTest) {
+  inspect(conf, 'Current Environment:')
 }
 
 export default conf
