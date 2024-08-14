@@ -37,7 +37,13 @@
     "mnt:pkg:add-dev": "npm install --save-dev --save-exact",
     "mnt:pkg:defcheck": "typesync --dry",
     "mnt:pkg:depcheck": "depcheck",
-    "mnt:pkg:updcheck": "npx -p npm-check-updates --yes --prefer-online -- ncu --upgrade --install always --interactive"
+    "mnt:pkg:updcheck": "npx -p npm-check-updates --yes --prefer-online -- ncu --upgrade --install always --interactive",
+    "rel:patch:rc": "commit-and-tag-version --release-as patch --prerelease",
+    "rel:patch": "commit-and-tag-version --release-as patch",
+    "rel:minor:rc": "commit-and-tag-version --release-as minor --prerelease",
+    "rel:minor": "commit-and-tag-version --release-as minor",
+    "rel:major:rc": "commit-and-tag-version --release-as major --prerelease",
+    "rel:major": "commit-and-tag-version --release-as major"
   },
   "dependencies": {
     "@godaddy/terminus": "4.12.1",
@@ -72,6 +78,7 @@
     "@types/node": "22.2.0",
     "@types/supertest": "6.0.2",
     "@types/uuid": "10.0.0",
+    "commit-and-tag-version": "12.4.1",
     "depcheck": "1.4.7",
     "doctoc": "2.2.1",
     "eslint": "9.9.0",

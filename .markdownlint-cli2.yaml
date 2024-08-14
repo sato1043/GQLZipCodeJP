@@ -14,7 +14,8 @@ gitignore: true
 
 # Define glob expressions to ignore
 ignores:
-  - 'node_modules'
+  - node_modules
+  - CHANGELOG.md
 
 # Rules
 # https://github.com/DavidAnson/markdownlint/blob/v0.32.1/README.md#rules--aliases

@@ -64,6 +64,14 @@ CONTENTS;
     - コミットタイプは以下から； build chore ci docs feat fix perf refactor revert style test
     - (必要に応じて)空行を挟んでから詳細テキスト
 
+- リリース
+  - `npm run rel:patch:rc` パッチリリース候補 タグ打ち
+  - `npm run rel:patch`    パッチリリース タグ打ち
+  - `npm run rel:minor:rc` パッチリリース候補 タグ打ち
+  - `npm run rel:minor`    パッチリリース タグ打ち
+  - `npm run rel:major:rc` パッチリリース候補 タグ打ち
+  - `npm run rel:major`    パッチリリース タグ打ち
+
 - dev環境
   - `npm run dev` (tsxをランタイムにTSを配信)
   - <https://localhost:3000> を自己署名証明書でホスト 
