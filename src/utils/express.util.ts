@@ -3,7 +3,11 @@ import CreateHttpError from 'http-errors'
 import isArray from 'lodash/isArray.js'
 import isString from 'lodash/isString.js'
 
-export type PromisedRequestHandler = (req: Request, res: Response, next: NextFunction) => Promise<void>
+export type PromisedRequestHandler = (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => Promise<void>
 
 export function wrapPromisedRequestHandler(fn: PromisedRequestHandler): RequestHandler {
   return function (req, res, next) {
@@ -19,8 +23,12 @@ export const Error422 = new CreateHttpError.UnprocessableEntity(`Unprocessable E
 export const Error500 = new CreateHttpError.InternalServerError(`Failed to Proceed`)
 export const Error501 = new CreateHttpError.NotImplemented(`Not Implemented`)
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const throw404 = () => {
+  throw Error404
+}
+
+// biome-ignore  lint/suspicious/noExplicitAny: 目的がanyからの型特定である
 export function extractStringFrom(anyValue: any) {
-  const noneArray = isArray(anyValue) ? anyValue[0] : anyValue // eslint-disable-line  @typescript-eslint/no-unsafe-assignment
+  const noneArray = isArray(anyValue) ? anyValue[0] : anyValue
   return isString(noneArray) ? noneArray : undefined
 }

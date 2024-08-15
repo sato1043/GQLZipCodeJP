@@ -1,18 +1,18 @@
-/* eslint-disable @typescript-eslint/prefer-nullish-coalescing */
-
 import fs from 'fs'
 import process from 'process'
+
 import { inspect } from './utils/debug.util.ts'
 
 Error.stackTraceLimit = Number(process.env.ERROR_STACK_LEN || 4)
 
-// prettier-ignore
 if (
-  !(process.env.NODE_ENV === 'production'
-    || process.env.NODE_ENV === 'test'
-    || process.env.NODE_ENV === 'development')
-  || !process.env.APIKEY_PASSPHRASE // APIKEY_*はkeytoolも利用中
-  || !process.env.APIKEY_SALT
+  !(
+    process.env.NODE_ENV === 'production' ||
+    process.env.NODE_ENV === 'test' ||
+    process.env.NODE_ENV === 'development'
+  ) ||
+  !process.env.APIKEY_PASSPHRASE || // APIKEY_*はkeytoolも利用中
+  !process.env.APIKEY_SALT
 ) {
   throw new Error('miss configured')
 }
@@ -65,16 +65,20 @@ const conf = {
     codeList: JSON.parse(process.env.APIKEY_CODELIST || '[]') as string[],
   },
 
-  // prettier-ignore
-  ...(process.env.NODE_ENV === 'production' ? production
-    : process.env.NODE_ENV === 'test' ? test
+  ...(process.env.NODE_ENV === 'production'
+    ? production
+    : process.env.NODE_ENV === 'test'
+      ? test
       : development),
 }
 
 conf.app.origin = `${conf.app.proto}://${conf.app.host}:${conf.app.port}`
 conf.app.allowOrigins.push(conf.app.origin)
 
-if (conf.app.listenOnHttps && (!fs.existsSync(conf.app.certKey) || !fs.existsSync(conf.app.certCrt))) {
+if (
+  conf.app.listenOnHttps &&
+  (!fs.existsSync(conf.app.certKey) || !fs.existsSync(conf.app.certCrt))
+) {
   console.error(`cert not found`)
   process.exit(1)
 }

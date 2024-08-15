@@ -1,10 +1,10 @@
-import express from 'express'
-import helmet from 'helmet'
-import { createYoga } from 'graphql-yoga'
 import { renderGraphiQL } from '@graphql-yoga/render-graphiql'
+import express from 'express'
+import { createYoga } from 'graphql-yoga'
+import helmet from 'helmet'
 
-import conf from './../conf.ts'
 import { wrapPromisedRequestHandler } from '../utils/express.util.ts'
+import conf from './../conf.ts'
 
 export const yoga = createYoga({
   landingPage: false,

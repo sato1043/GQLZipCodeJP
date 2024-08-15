@@ -23,11 +23,14 @@ CONTENTS;
   - IDE は JetBrains IntelliJ IDEA Ultimate を使用
 
 - パッケージ管理
-  - `npm run mnt:pkg:add-dev <PACKAGE>`
   - `npm run mnt:pkg:add <PACKAGE>`
+  - `npm run mnt:pkg:add-dev <PACKAGE>`
+  - `npm run mnt:pkg:rm <PACKAGE>`
+  - `npm run mnt:pkg:rm-dev <PACKAGE>`
   - `npm run mnt:pkg:defcheck`
   - `npm run mnt:pkg:depcheck`
   - `npm run mnt:pkg:updcheck`
+  - lefthook.yaml 変更時 `npm run mnt:requisite:lefthook` 再実行
 
 - TS設定
   - トランスパイラは tsc
@@ -50,15 +53,16 @@ CONTENTS;
   - まずざっとスペックを書いて合意確認し、実装し、テスト・リファクタする（テスト・リファクタも予定工数に含める）
 
 - リント
-  - `npm run lint`
+  - フォーマット・リントはファイル保存時におこなう
+  - 手動チェック `npm run lint`
+  - 自動フォーマット `npm run mnt:format` 
 
 - ドキュメント
   - README でレベル〜３のセクション追加の際には目次再生成 `npm run mnt:doc:toc`
 
 - コミット
-  - pre-commit は検査のみ行う（fix はプログラマが行う）
-  - lefthook.yaml 変更時は `npm run mnt:requisite:lefthook` を再実行
-  - メッセージ
+  - pre-commit はチェックのみ（変更はプログラマ）
+  - コミットメッセージ
     - 機械処理のために[Conventional Commits Specification](https://www.conventionalcommits.org/en/v1.0.0/#summary)へ倣う
     - メッセージ１行目をメッセージヘッドと呼ぶ。書式「<コミットタイプ>: 概要テキスト」
     - メッセージヘッド冒頭に[コミットタイプ](https://github.com/conventional-changelog/commitlint/tree/master/@commitlint/config-conventional#rules)を含める

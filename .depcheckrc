@@ -1,6 +1,7 @@
 ignores: [
   "textlint-rule-*",
   "@types/*",
+  "globals",
   "ts-jest",
   "@commitlint/*",
   "dependency-cruiser",

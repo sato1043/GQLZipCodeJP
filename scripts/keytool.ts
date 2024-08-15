@@ -19,23 +19,21 @@
  *   - 通常運用でAPIキーを手元で解読する必要はありません
  */
 
-import * as uuid from 'uuid'
-import { decrypt, encrypt } from '../src/utils/crypto.util.ts'
-import isString from 'lodash/isString.js'
-//@ts-expect-error esModuleInterop:true にして default を付加してある
+// @ts-expect-error esModuleInterop:true にして default を付加してある
 import getopts from 'getopts'
 import type { ParsedOptions } from 'getopts'
+import isString from 'lodash/isString.js'
+import * as uuid from 'uuid'
 
-// eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-assignment
+import { decrypt, encrypt } from '../src/utils/crypto.util.ts'
+
 const options: ParsedOptions = getopts(process.argv.slice(2))
 const optionP = isString(options.p) ? options.p : undefined
 const optionS = isString(options.s) ? options.s : undefined
 const optionE = isString(options.e) ? options.e : undefined
 const optionD = isString(options.d) ? options.d : undefined
 
-// eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
 const passphrase = optionP || process.env.APIKEY_PASSPHRASE || uuid.v4()
-// eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
 const salt = optionS || process.env.APIKEY_SALT || uuid.v4()
 if (!passphrase || !salt) {
   console.error(`error: empty passphrase or salt`)
@@ -49,7 +47,6 @@ if (options.i) {
   console.log(`APIKEY_CODELIST=["${code}"]`)
   console.log(`TEST_APIKEY=${encrypt(passphrase, salt, code)}`)
 } else if (options.e) {
-  // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
   const code = optionE || uuid.v4()
   console.log(
     JSON.stringify(

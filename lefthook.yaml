@@ -50,21 +50,15 @@ pre-commit:
       skip:
         - merge
         - rebase
-    lint_prettier:
-      glob: '*.{js,ts,json,yaml}'
-      run: prettier --check {staged_files}
+    lint_biome:
+      glob: '*.{js,ts,json}'
+      run: biome check --no-errors-on-unmatched {staged_files}
       skip:
         - merge
         - rebase
     lint_ts:
       glob: '*.{js,ts}'
       run: tsc --noEmit
-      skip:
-        - merge
-        - rebase
-    lint_es:
-      glob: '*.{js,ts}'
-      run: eslint {staged_files}
       skip:
         - merge
         - rebase

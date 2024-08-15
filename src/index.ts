@@ -1,25 +1,28 @@
 #!/usr/bin/env node
 
+import fs from 'fs'
 import http from 'http'
 import https from 'https'
-import fs from 'fs'
+import process from 'process'
+
 import { createTerminus } from '@godaddy/terminus'
 import pick from 'lodash/pick.js'
 
 import app from './app.ts'
 import conf from './conf.ts'
-import process from 'process'
 import { inspect } from './utils/debug.util.js'
 
-// prettier-ignore
 const httpServer = !conf.app.listenOnHttps
   ? http.createServer(app)
-  : https.createServer({
-    key: fs.readFileSync(conf.app.certKey),
-    cert: fs.readFileSync(conf.app.certCrt),
-    requestCert: false,
-    rejectUnauthorized: false,
-  }, app)
+  : https.createServer(
+      {
+        key: fs.readFileSync(conf.app.certKey),
+        cert: fs.readFileSync(conf.app.certCrt),
+        requestCert: false,
+        rejectUnauthorized: false,
+      },
+      app,
+    )
 
 createTerminus(
   httpServer,
@@ -34,7 +37,6 @@ createTerminus(
 
 console.time('server set up in')
 
-// prettier-ignore
 httpServer
   .listen(conf.app.port, conf.app.host)
   .on('error', onError)
@@ -72,15 +74,16 @@ function onListening() {
   }
 }
 
+// biome-ignore  lint/suspicious/useAwait: callerがasyncを要求
 async function onShutdown() {
   console.info('server is starting cleanup')
   // ...
   // here my cleanup code
   // ...
   console.info('cleanup finished, shutting down')
-  return Promise.resolve()
 }
 
+// biome-ignore  lint/suspicious/useAwait: callerがasyncを要求
 async function onHealthCheck() {
   return Promise.resolve('UP')
 }
