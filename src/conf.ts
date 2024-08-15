@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/prefer-nullish-coalescing */
 
+import fs from 'fs'
 import process from 'process'
 import { inspect } from './utils/debug.util.ts'
 
@@ -36,6 +37,8 @@ const test = {
 
 // ==========
 
+const host = process.env.HOST || 'localhost'
+
 const conf = {
   env: process.env.NODE_ENV,
   isProduction: process.env.NODE_ENV === 'production',
@@ -45,13 +48,15 @@ const conf = {
   app: {
     listenOnHttps: process.env.LISTEN_ON_HTTPS === 'true',
     proto: process.env.LISTEN_ON_HTTPS === 'true' ? 'https' : 'http',
-    host: process.env.HOST || 'localhost',
+    host,
     port: normalizePort(process.env.PORT) ?? 3000,
     origin: '',
     healthCheckEndPointPath: process.env.HEALTHCHECK_ENDPOINT_PATH || '/health',
     gracefulShutdownTimeoutSec: Number(process.env.GRACEFUL_SHUTDOWN_TIMEOUT_SEC || 10),
     allowOrigins: JSON.parse(process.env.ALLOW_ORIGINS || '[]') as string[],
     allowAllServers: process.env.ALLOW_ALL_SERVERS === 'true',
+    certKey: `scripts/crt@${host}/${host}.key`,
+    certCrt: `scripts/crt@${host}/${host}.crt`,
   },
 
   apikey: {
@@ -68,6 +73,11 @@ const conf = {
 
 conf.app.origin = `${conf.app.proto}://${conf.app.host}:${conf.app.port}`
 conf.app.allowOrigins.push(conf.app.origin)
+
+if (conf.app.listenOnHttps && (!fs.existsSync(conf.app.certKey) || !fs.existsSync(conf.app.certCrt))) {
+  console.error(`cert not found`)
+  process.exit(1)
+}
 
 if (conf.isDevelopment || conf.isTest) {
   inspect(conf, 'Current Environment:')

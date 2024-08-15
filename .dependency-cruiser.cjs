@@ -240,7 +240,10 @@ module.exports = {
     /* Which modules to exclude */
     exclude : {
       /* path: an array of regular expressions in strings to match against */
-      path: 'express-list-endpoints',
+      path: [
+        'express-list-endpoints',
+        '@graphql-yoga/render-graphiql',
+      ],
     },
 
     /* Which modules to exclusively include (array of regular expressions in strings)

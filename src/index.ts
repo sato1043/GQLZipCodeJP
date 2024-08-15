@@ -11,23 +11,12 @@ import conf from './conf.ts'
 import process from 'process'
 import { inspect } from './utils/debug.util.js'
 
-const { host, port } = conf.app
-const certKey = `scripts/crt@${host}/${host}.key`
-const certCrt = `scripts/crt@${host}/${host}.crt`
-const hasCertificates = fs.existsSync(certKey) && fs.existsSync(certCrt)
-if (conf.app.listenOnHttps && !hasCertificates) {
-  console.error(`cert not found`)
-  process.exit(1)
-}
-
-app.set('port', port)
-
 // prettier-ignore
 const httpServer = !conf.app.listenOnHttps
   ? http.createServer(app)
   : https.createServer({
-    key: fs.readFileSync(certKey),
-    cert: fs.readFileSync(certCrt),
+    key: fs.readFileSync(conf.app.certKey),
+    cert: fs.readFileSync(conf.app.certCrt),
     requestCert: false,
     rejectUnauthorized: false,
   }, app)
@@ -47,7 +36,7 @@ console.time('server set up in')
 
 // prettier-ignore
 httpServer
-  .listen(port, host)
+  .listen(conf.app.port, conf.app.host)
   .on('error', onError)
   .on('listening', onListening)
 
@@ -59,11 +48,11 @@ function onError(error: NodeJS.ErrnoException) {
   }
   switch (error.code) {
     case 'EACCES':
-      console.error(`Port ${port} requires elevated privileges`)
+      console.error(`Port ${conf.app.port} requires elevated privileges`)
       process.exit(1)
       break
     case 'EADDRINUSE':
-      console.error(`Port ${port} is already in use`)
+      console.error(`Port ${conf.app.port} is already in use`)
       process.exit(1)
       break
     default:
@@ -72,8 +61,7 @@ function onError(error: NodeJS.ErrnoException) {
 }
 
 function onListening() {
-  const proto = conf.app.listenOnHttps ? 'https' : 'http'
-  console.info(`listening on ${proto}://${host}:${port} in NODE_ENV='${conf.env}'`)
+  console.info(`listening on ${conf.app.origin} in NODE_ENV='${conf.env}'`)
   console.timeEnd('server set up in')
   if (conf.isDevelopment) {
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
@@ -84,16 +72,15 @@ function onListening() {
   }
 }
 
-// eslint-disable-next-line @typescript-eslint/require-await
 async function onShutdown() {
   console.info('server is starting cleanup')
   // ...
   // here my cleanup code
   // ...
   console.info('cleanup finished, shutting down')
+  return Promise.resolve()
 }
 
-// eslint-disable-next-line @typescript-eslint/require-await
 async function onHealthCheck() {
-  return 'UP'
+  return Promise.resolve('UP')
 }
