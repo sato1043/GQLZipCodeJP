@@ -36,7 +36,7 @@ const optionD = isString(options.d) ? options.d : undefined
 const passphrase = optionP || process.env.APIKEY_PASSPHRASE || uuid.v4()
 const salt = optionS || process.env.APIKEY_SALT || uuid.v4()
 if (!passphrase || !salt) {
-  console.error(`error: empty passphrase or salt`)
+  console.error('error: empty passphrase or salt')
   process.exit(2)
 }
 

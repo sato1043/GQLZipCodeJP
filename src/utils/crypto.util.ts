@@ -1,4 +1,4 @@
-import crypto from 'crypto'
+import crypto from 'node:crypto'
 
 const ALGORITHM = 'aes-256-cbc'
 const SEP = '-'
@@ -14,7 +14,7 @@ export function encrypt(passphrase: string, salt: string, data: string) {
 
 export function decrypt(passphrase: string, salt: string, encryptedAndIv: string) {
   const [encrypted, ivHex] = encryptedAndIv.split(SEP)
-  if (!encrypted || !ivHex) throw new Error(`decrypt failed`)
+  if (!encrypted || !ivHex) throw new Error('decrypt failed')
   const iv = Buffer.from(ivHex, 'hex')
   const key = crypto.scryptSync(passphrase, salt, KEY_LEN)
   const decipher = crypto.createDecipheriv(ALGORITHM, key, iv)

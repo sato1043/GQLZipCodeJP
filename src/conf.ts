@@ -1,5 +1,5 @@
-import fs from 'fs'
-import process from 'process'
+import fs from 'node:fs'
+import process from 'node:process'
 
 import { inspect } from './utils/debug.util.ts'
 
@@ -79,7 +79,7 @@ if (
   conf.app.listenOnHttps &&
   (!fs.existsSync(conf.app.certKey) || !fs.existsSync(conf.app.certCrt))
 ) {
-  console.error(`cert not found`)
+  console.error('cert not found')
   process.exit(1)
 }
 
@@ -91,6 +91,6 @@ export default conf
 
 function normalizePort(val: string | undefined) {
   if (val === undefined) return undefined
-  const port = parseInt(val, 10)
+  const port = Number.parseInt(val, 10)
   return !Number.isNaN(port) && 0 <= port ? port : undefined
 }

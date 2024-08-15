@@ -50,9 +50,9 @@ pre-commit:
       skip:
         - merge
         - rebase
-    lint_biome:
-      glob: '*.{js,ts,json}'
-      run: biome check --no-errors-on-unmatched {staged_files}
+    lint_check:
+      glob: "*.{js,ts,cjs,mjs,d.cts,d.mts,jsx,tsx,json,jsonc}"
+      run: biome check --no-errors-on-unmatched --files-ignore-unknown=true --colors=off {staged_files}
       skip:
         - merge
         - rebase

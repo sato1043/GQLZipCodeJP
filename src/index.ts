@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 
-import fs from 'fs'
-import http from 'http'
-import https from 'https'
-import process from 'process'
+import fs from 'node:fs'
+import http from 'node:http'
+import https from 'node:https'
+import process from 'node:process'
 
 import { createTerminus } from '@godaddy/terminus'
 import pick from 'lodash/pick.js'
