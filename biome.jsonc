@@ -128,6 +128,23 @@
   },
   "overrides": [
     {
+      "include": ["src/schema/types.generated.ts"], // 注意; graphql-codegenの生成物のための制約緩和
+      "linter": {
+        "rules": {
+          "complexity": {
+            "noBannedTypes": "off"
+          },
+          "correctness": {
+            "noUnusedVariables": "off"
+          },
+          "suspicious": {
+            "noExplicitAny": "off",
+            "noConfusingVoidType": "off"
+          }
+        }
+      }
+    },
+    {
       "include": ["**/*.ts", "**/*.tsx", "**/*.mts", "**/*.cts"],
       "linter": {
         "rules": {

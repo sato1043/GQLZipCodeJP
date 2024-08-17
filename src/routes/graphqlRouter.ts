@@ -1,13 +1,16 @@
 import { renderGraphiQL } from '@graphql-yoga/render-graphiql'
 import express from 'express'
-import { createYoga } from 'graphql-yoga'
+import { createSchema, createYoga } from 'graphql-yoga'
 import helmet from 'helmet'
 
+import { resolvers } from '../schema/resolvers.generated.ts'
+import { typeDefs } from '../schema/typeDefs.generated.ts'
 import { wrapPromisedRequestHandler } from '../utils/express.util.ts'
 import conf from './../conf.ts'
 
 export const yoga = createYoga({
   landingPage: false,
+  schema: createSchema({ typeDefs, resolvers }),
   graphqlEndpoint: '/api/v1/graphql',
   ...(!conf.isDevelopment
     ? undefined

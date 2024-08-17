@@ -1,0 +1,15 @@
+type Query
+type Mutation
+
+# https://graphql.org/learn/schema/#scalar-types
+
+# https://github.com/Urigo/graphql-scalars
+scalar DateTimeISO
+scalar BigInt
+scalar Currency
+scalar EmailAddress
+scalar PhoneNumber # https://github.com/google/libphonenumber?tab=readme-ov-file
+scalar PostalCode # "JP", "\d{3}-\d{4}"
+scalar URL
+scalar UUID
+scalar Void
