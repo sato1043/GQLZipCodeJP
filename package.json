@@ -32,6 +32,7 @@
     "mnt:add-requisites": "run-s mnt:requisite:*",
     "mnt:api:keygen": "dotenvx run -- tsx scripts/keytool -e",
     "mnt:format": "npm run lint:biome -- --write",
+    "mnt:format:import": "bash ./scripts/replace-import.sh src",
     "mnt:doc:toc": "doctoc --github --title 'CONTENTS;' --maxlevel 3 README.md",
     "mnt:pkg:add": "npm install --save-exact",
     "mnt:pkg:add-dev": "npm install --save-dev --save-exact",
