@@ -9,6 +9,8 @@
 CONTENTS;
 
 - [開発](#%E9%96%8B%E7%99%BA)
+- [設計](#%E8%A8%AD%E8%A8%88)
+  - [GQLスキーマ定義とジェネレータの関係](#gql%E3%82%B9%E3%82%AD%E3%83%BC%E3%83%9E%E5%AE%9A%E7%BE%A9%E3%81%A8%E3%82%B8%E3%82%A7%E3%83%8D%E3%83%AC%E3%83%BC%E3%82%BF%E3%81%AE%E9%96%A2%E4%BF%82)
 - [ライセンス](#%E3%83%A9%E3%82%A4%E3%82%BB%E3%83%B3%E3%82%B9)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
@@ -96,6 +98,72 @@ CONTENTS;
   - `npm run mnt:api:keygen`
   - 発行された code を管理台帳に記録して .env の APIKEY_CODELIST に追記(JSON文字列)
   - 発行された apiKey を利用者に提示
+
+
+設計
+----
+
+### GQLスキーマ定義とジェネレータの関係
+
+本件はスキーマファーストの手法をとりたいので、
+GraphQL Yoga と GraphQL codegen を組み合わせます
+
+スキーマファーストにしたい理由は、
+要件や定義の把握容易さを重視するとシンプルな定義ファイル記述で済む手法が合目的だからです
+
+で、そのための道具のコードジェネレータですが、生成部分と各自のコードの、
+コード間関連を把握しつつ追記することになりますので、この節はその説明です
+
+- [生成ファイルの概要](https://the-guild.dev/graphql/codegen/docs/guides/graphql-server-apollo-yoga-with-server-preset#generated-files-overview)
+  - types.generated.ts: TypeScript 型、自動生成
+  - typeDefs.generated.ts: TS自体の構文解析用型定義
+  - resolvers/Query 下や resolver/Mutaion 下の.ts:
+    返却値解決のためのリゾルバ関数（実態を自分でコーディングする）
+  - resolvers/直下の SomeType.ts:
+    Typed object type resolvers of each module
+  - resolvers.generated.ts: 自動生成型とコードの取りまとめのホルダー
+
+- スキーマ定義の記述
+  - まず、スキーマ定義を自分で書く
+  - 本件では schema/zipCode/zipCodeSchema.graphql 
+    （ファイル名が変換結果に影響するので多少冗長な命名になる）
+  
+ 1. mappers に実体の値の型定義をおく
+ 2. QueryResolver で mappers 通りに実体の値を取得する
+ 3. 各個の Resolver で mappers な実体の値を GraphQL SDL 定義通りに当て直す（リマップする）
+
+```text
+  resolvers.generated.ts の Resolvers (aka. root resolver)
+  ↓
+  Resolvers['Query'] = QueryResolvers （→ baseSchema.graphql の type Query で導入される)
+  ↓
+  types.generated.ts の QueryResolvers['someQuery'] でリゾルバ関数を宣言する
+      （→ zipCodeSchema.graphql の extend type Query { someQuery() } から導入される）
+    - リゾルバ関数は Resolver<>型のメソッドで、
+      - 引数型が Query_someQueryArgs
+      - 戻り値型が ResolversTypes['SomeQuery'] および実体 SomeQuery 型
+      - 結局作業としては、それぞれのリゾルバ関数を schema/zipCode/resolvers 下に書くことになる
+
+    - SomeQuery型に対して SomeQueryMapper を書く
+      （→ src/schema/zipCode/zipCodeSchema.mappers.ts)
+  ↓
+  src/schema/zipCode/resolvers/Query/someQuery.ts
+    ここで mappers に沿った仕様で値を解決する
+
+----
+  Resolvers['ZipCode']
+    = ZipCodeResolvers<
+        parentType
+          = ResolversParentTypes['ZipCode']
+          = ZipCodeMapper.{ id, firstName, lastName }
+      > = { id, fullName }
+        → 返却タイプは zipCodeSchema.graphql の type ZipCode 同様の実体(にジェネレータが仕立てる)
+  ↓
+  src/schema/zipCode/ZipCode.ts
+    このコードで ZipCodeMapper (=parentType) から返却タイプへリマップする
+  ↓
+  Query['zipCode'] => ZipCode.{ id, fullName }
+```
 
 
 ライセンス
