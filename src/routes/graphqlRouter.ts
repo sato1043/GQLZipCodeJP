@@ -3,14 +3,17 @@ import express from 'express'
 import { createSchema, createYoga } from 'graphql-yoga'
 import helmet from 'helmet'
 
+import { townAreaDictionary } from '../schema/contexts.ts'
+import type { IncomingRequestContext } from '../schema/contexts.ts'
 import { resolvers } from '../schema/resolvers.generated.ts'
 import { typeDefs } from '../schema/typeDefs.generated.ts'
 import { wrapPromisedRequestHandler } from '../utils/express.util.ts'
 import conf from './../conf.ts'
 
-export const yoga = createYoga({
+// biome-ignore  lint/complexity/noBannedTypes: TServerContextを明示的初期化する定数が見つからない/使わないため
+export const yoga = createYoga<{}, IncomingRequestContext>({
   landingPage: false,
-  schema: createSchema({ typeDefs, resolvers }),
+  schema: createSchema<IncomingRequestContext>({ typeDefs, resolvers }),
   graphqlEndpoint: '/api/v1/graphql',
   ...(!conf.isDevelopment
     ? undefined
@@ -18,6 +21,7 @@ export const yoga = createYoga({
         graphiql: true, // (viewer) https://the-guild.dev/graphql/yoga-server/docs/features/graphiql
         renderGraphiQL: renderGraphiQL,
       }),
+  context: () => ({ townAreaDictionary }),
 })
 
 const graphqlRouter = express.Router()

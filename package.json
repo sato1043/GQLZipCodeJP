@@ -18,6 +18,7 @@
   "scripts": {
     "start": "exit 1",
     "dev": "dotenvx run -- tsx watch ./src",
+    "open:sandbox": "open https://localhost:3000/api/v1/graphql",
     "lint": "run-s lint:*",
     "lint:biome": "biome check --no-errors-on-unmatched",
     "lint:md": "markdownlint-cli2 \"**/*.md\" && textlint \"**/*.md\"",
@@ -72,6 +73,7 @@
     "@eddeee888/gcg-typescript-resolver-files": "0.10.4",
     "@graphql-codegen/cli": "5.0.3",
     "@graphql-yoga/render-graphiql": "5.7.0",
+    "@jest/globals": "29.7.0",
     "@types/compression": "1.7.5",
     "@types/cookie-parser": "1.4.7",
     "@types/cors": "2.8.17",

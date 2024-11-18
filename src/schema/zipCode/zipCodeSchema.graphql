@@ -1,0 +1,40 @@
+# 更新理由（提供データ追加修正の変更の理由）
+# 「0」変更なし
+# 「1」市政・区政・町政・分区・政令指定都市施行
+# 「2」住居表示の実施
+# 「3」区画整理
+# 「4」郵便区調整等
+# 「5」訂正
+# 「6」廃止（廃止データのみ使用）
+enum UpdateReason {
+  NO_CHANGE
+  ADMINISTRATION
+  DESIGNATION
+  READJUSTMENT
+  POSTAL_ADJUST
+  CORRECTION
+  ABOLITION
+}
+
+type TownArea {
+  id: ID!
+  name: String!
+  kana: String!
+  postalCode: PostalCode! # "JP", "\d{3}-\d{4}"
+  prefectureName: String!
+  prefectureKana: String!
+  cityName: String!
+  cityKana: String!
+  chomeList: [String!]!
+  difficultyNotOnlyZipAndBanti: Boolean!
+  difficultyNeedKoaza: Boolean!
+  difficultyNeedChome: Boolean!
+  difficultyDoubleMeaningZipArea: Boolean!
+  createdDateTime: DateTimeISO!
+  updateDateTime: DateTimeISO!
+  updateReason: UpdateReason!
+}
+
+extend type Query {
+  townArea(postalCode: PostalCode!): TownArea!
+}

@@ -119,7 +119,7 @@
       "quoteStyle": "single",
       "attributePosition": "auto"
     },
-    "globals": ["exports"]
+    "globals": ["exports", "jest"]
   },
   "json": {
     "formatter": {
@@ -140,6 +140,9 @@
           "suspicious": {
             "noExplicitAny": "off",
             "noConfusingVoidType": "off"
+          },
+          "style": {
+            "useConsistentArrayType": "off"
           }
         }
       }

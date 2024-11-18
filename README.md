@@ -1,8 +1,7 @@
-** 2024.11 中断中 **
-
-
 郵便番号API
 ==========
+
+NOTE: **2024.11 別件で使用するため公開見合わせ中。後日調整の予定**
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
@@ -48,12 +47,12 @@ CONTENTS;
     - パスエイリアス・compilerOptions.(paths|baseUrl) 利用しない
 
 - GraphQLスキーマ定義言語(GQL SDL)コード変換
+  - 生成で上書きするファイルがあるため注意（作業前バックアップ等）
   - `npm run mnt:gql:gen`
   - GraphQLスキーマは SDL記述したのちコード変換
   - 対象は分割記述したSDL（src/schema/**/*.graphql）
   - 分割記述したSDLを graphql-codegen とプリセット仕様に則って変換処理
-  - 変換処理は次を生成； 1.各リゾルバー雛形と参照情報、2.TS型定義
-  - 生成で上書きするファイルがあるため注意（作業前バックアップ等）
+  - 設計の項で詳述
 
 - 編集
   - 大きすぎるぐらいのモニターを大きめポイントのソースコード用フォントで使う
@@ -106,31 +105,54 @@ CONTENTS;
 ### GQLスキーマ定義とジェネレータの関係
 
 本件はスキーマファーストの手法をとりたいので、
-GraphQL Yoga と GraphQL codegen を組み合わせます
+GraphQL Yoga と GraphQL codegen を組み合わせます。
 
 スキーマファーストにしたい理由は、
-要件や定義の把握容易さを重視するとシンプルな定義ファイル記述で済む手法が合目的だからです
+要件や定義の把握容易さを重視するとシンプルな定義ファイル記述で済む手法が合目的だからです。
 
-で、そのための道具のコードジェネレータですが、生成部分と各自のコードの、
-コード間関連を把握しつつ追記することになりますので、この節はその説明です
+この節はそのための道具のコードジェネレータについて、生成部分のコード関連を把握するための説明です。
 
 - [生成ファイルの概要](https://the-guild.dev/graphql/codegen/docs/guides/graphql-server-apollo-yoga-with-server-preset#generated-files-overview)
-  - types.generated.ts: TypeScript 型、自動生成
-  - typeDefs.generated.ts: TS自体の構文解析用型定義
-  - resolvers/Query 下や resolver/Mutaion 下の.ts:
-    返却値解決のためのリゾルバ関数（実態を自分でコーディングする）
-  - resolvers/直下の SomeType.ts:
-    Typed object type resolvers of each module
-  - resolvers.generated.ts: 自動生成型とコードの取りまとめのホルダー
+  - GraphQLサーバーは Yoga で、エントリーポイントは src/routes/graphqlRouters.ts の createYoga() で作られる。
+  - codegen.ts が自動生成の設定で、スキーマは 'src/schema/**/*.graphql' としている。ジェネレータはここから書き出す。
+  - Yogaサーバーのスキーマは createSchema() で作られる。そのパラメータが自動生成される。
+  - `npm run mnt:gql:gen`
+    - 生成で上書きするファイルがあるため注意（作業前バックアップ等）
+    - typeDefs.generated.ts: 作成するスキーマに含む、独自スキーマ型のメタ情報一覧
+    - 受信クエリに含まれた（プリミティブでない名前の）独自スキーマ型について、一致する値解決方法（＝リゾルバ）を探すことになる。
+    - 自分で増やしたスキーマ型には値解決のためのリゾルバを書く必要がある。
+    - resolvers.generated.ts: GQLスキーマ型をそれぞれ値解決するリゾルバ実装を、テンプレを交えて、ひと通り生成している。
+    - 同様に、types.generated.ts には TypeScript 型を生成している。
+    - プリミティブ以外のGQL型をすべて追加する必要があるが、とはいえ定義済みの補助的な型を 'graphql-scalars' から追加もしている。
+  - リゾルバが返す値は連鎖的に解決される。Query リゾルバの返却が別のオブジェクト型だった場合、リゾルバメソッドが返した値を引数としてオブジェクト自体を解決するリゾルバが呼ばれる。
+    - resolvers/Query 下や resolver/Mutaion 下の.ts はGraphQLサーバーがまず呼び出すべき（ルートレベルの）リゾルバとなる。
+    - resolvers/直下の SomeType.ts がGQLオブジェクト型のリゾルバになっている。
+    - オブジェクト型は主にインターフェイス変換のために存在する。変換で外部に整合させることができ、または内部データ型を隠すことができる。
+    - Queryリゾルバの返却型は、なにもしないで生成すればGQL型一致で定義される。マッパーインターフェイスを自前で書いて内部データ型そのものを使うこともできる。
 
-- スキーマ定義の記述
-  - まず、スキーマ定義を自分で書く
-  - 本件では schema/zipCode/zipCodeSchema.graphql 
-    （ファイル名が変換結果に影響するので多少冗長な命名になる）
-  
- 1. mappers に実体の値の型定義をおく
- 2. QueryResolver で mappers 通りに実体の値を取得する
- 3. 各個の Resolver で mappers な実体の値を GraphQL SDL 定義通りに当て直す（リマップする）
+- 実装手順
+  1. GQLスキーマ定義を書く
+  2. mappers にインターフェイス変換型を書く
+  3. ジェネレータで TSテンプレコードを生成する
+  4. Query/Mutationリゾルバでは mappers の変換型の値をリターンする
+  5. （4.がチェーンされるので）オブジェクトリゾルバでは外部インターフェイス通りの値をリターンする
+
+- GQLスキーマ定義を書く
+  - （ファイル名が変換結果に影響するので多少冗長な命名になる）
+
+- mappers で内部データ型のモデル型を定義や別名して export interface する
+  - （内部データモデル型を書く（DBクエリの戻り値型やJSONの型など）)
+  - （内部データモデル型とGQLインターフェイス型との間の変換レイヤーになる）
+  - （内部データモデル変更がGQLインターフェイスに影響しないためのクッションとしてこのレイヤーを持たせる）
+  - （シンプルで変換不要なモデルの場合は冗長になる。）
+
+- ジェネレータで tsテンプレコードを生成する
+  - codegen.ts の設定で src/schema/ 下に生成させている
+  - resolver/ 下の既存コードは、避けてから作り直すほうが問題になりにくい
+    （モジュールにすでに書いてあることが優先されるとは謳われているが境界が危うい気はする）
+  - `npm run mnt:gql:gen`
+
+- テンプレコードをカスタマイズする
 
 ```text
   resolvers.generated.ts の Resolvers (aka. root resolver)
@@ -139,30 +161,21 @@ GraphQL Yoga と GraphQL codegen を組み合わせます
   ↓
   types.generated.ts の QueryResolvers['someQuery'] でリゾルバ関数を宣言する
       （→ zipCodeSchema.graphql の extend type Query { someQuery() } から導入される）
+
     - リゾルバ関数は Resolver<>型のメソッドで、
       - 引数型が Query_someQueryArgs
-      - 戻り値型が ResolversTypes['SomeQuery'] および実体 SomeQuery 型
-      - 結局作業としては、それぞれのリゾルバ関数を schema/zipCode/resolvers 下に書くことになる
+      - 戻り値型が ResolversTypes['SomeType'] および実体 SomeType 型
+      - 結局作業としては、それぞれのリゾルバ関数を書くことになる
 
-    - SomeQuery型に対して SomeQueryMapper を書く
+    - SomeType型に対して内部データ変換を折り込みたいなら SomeTypeMapper を書く
       （→ src/schema/zipCode/zipCodeSchema.mappers.ts)
-  ↓
-  src/schema/zipCode/resolvers/Query/someQuery.ts
-    ここで mappers に沿った仕様で値を解決する
 
-----
-  Resolvers['ZipCode']
-    = ZipCodeResolvers<
-        parentType
-          = ResolversParentTypes['ZipCode']
-          = ZipCodeMapper.{ id, firstName, lastName }
-      > = { id, fullName }
-        → 返却タイプは zipCodeSchema.graphql の type ZipCode 同様の実体(にジェネレータが仕立てる)
-  ↓
-  src/schema/zipCode/ZipCode.ts
-    このコードで ZipCodeMapper (=parentType) から返却タイプへリマップする
-  ↓
-  Query['zipCode'] => ZipCode.{ id, fullName }
+      以下のような生成が追加される
+        export type ResolversTypes = {
+          SomeType: ResolverTypeWrapper<SomeTypeMapper>
+
+        export type ResolversParentTypes = {
+          SomeType: SomeTypeMapper
 ```
 
 

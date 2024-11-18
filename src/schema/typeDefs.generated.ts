@@ -3,18 +3,32 @@ export const typeDefs = {
   kind: 'Document',
   definitions: [
     {
-      kind: 'ObjectTypeDefinition',
       name: { kind: 'Name', value: 'Query' },
-      interfaces: [],
-      directives: [],
-      fields: [],
-    },
-    {
       kind: 'ObjectTypeDefinition',
-      name: { kind: 'Name', value: 'Mutation' },
-      interfaces: [],
+      fields: [
+        {
+          kind: 'FieldDefinition',
+          name: { kind: 'Name', value: 'townArea' },
+          arguments: [
+            {
+              kind: 'InputValueDefinition',
+              name: { kind: 'Name', value: 'postalCode' },
+              type: {
+                kind: 'NonNullType',
+                type: { kind: 'NamedType', name: { kind: 'Name', value: 'PostalCode' } },
+              },
+              directives: [],
+            },
+          ],
+          type: {
+            kind: 'NonNullType',
+            type: { kind: 'NamedType', name: { kind: 'Name', value: 'TownArea' } },
+          },
+          directives: [],
+        },
+      ],
       directives: [],
-      fields: [],
+      interfaces: [],
     },
     {
       kind: 'ScalarTypeDefinition',
@@ -62,17 +76,228 @@ export const typeDefs = {
       directives: [],
     },
     {
+      kind: 'EnumTypeDefinition',
+      name: { kind: 'Name', value: 'UpdateReason' },
+      directives: [],
+      values: [
+        {
+          kind: 'EnumValueDefinition',
+          name: { kind: 'Name', value: 'NO_CHANGE' },
+          directives: [],
+        },
+        {
+          kind: 'EnumValueDefinition',
+          name: { kind: 'Name', value: 'ADMINISTRATION' },
+          directives: [],
+        },
+        {
+          kind: 'EnumValueDefinition',
+          name: { kind: 'Name', value: 'DESIGNATION' },
+          directives: [],
+        },
+        {
+          kind: 'EnumValueDefinition',
+          name: { kind: 'Name', value: 'READJUSTMENT' },
+          directives: [],
+        },
+        {
+          kind: 'EnumValueDefinition',
+          name: { kind: 'Name', value: 'POSTAL_ADJUST' },
+          directives: [],
+        },
+        {
+          kind: 'EnumValueDefinition',
+          name: { kind: 'Name', value: 'CORRECTION' },
+          directives: [],
+        },
+        {
+          kind: 'EnumValueDefinition',
+          name: { kind: 'Name', value: 'ABOLITION' },
+          directives: [],
+        },
+      ],
+    },
+    {
+      kind: 'ObjectTypeDefinition',
+      name: { kind: 'Name', value: 'TownArea' },
+      interfaces: [],
+      directives: [],
+      fields: [
+        {
+          kind: 'FieldDefinition',
+          name: { kind: 'Name', value: 'id' },
+          arguments: [],
+          type: {
+            kind: 'NonNullType',
+            type: { kind: 'NamedType', name: { kind: 'Name', value: 'ID' } },
+          },
+          directives: [],
+        },
+        {
+          kind: 'FieldDefinition',
+          name: { kind: 'Name', value: 'name' },
+          arguments: [],
+          type: {
+            kind: 'NonNullType',
+            type: { kind: 'NamedType', name: { kind: 'Name', value: 'String' } },
+          },
+          directives: [],
+        },
+        {
+          kind: 'FieldDefinition',
+          name: { kind: 'Name', value: 'kana' },
+          arguments: [],
+          type: {
+            kind: 'NonNullType',
+            type: { kind: 'NamedType', name: { kind: 'Name', value: 'String' } },
+          },
+          directives: [],
+        },
+        {
+          kind: 'FieldDefinition',
+          name: { kind: 'Name', value: 'postalCode' },
+          arguments: [],
+          type: {
+            kind: 'NonNullType',
+            type: { kind: 'NamedType', name: { kind: 'Name', value: 'PostalCode' } },
+          },
+          directives: [],
+        },
+        {
+          kind: 'FieldDefinition',
+          name: { kind: 'Name', value: 'prefectureName' },
+          arguments: [],
+          type: {
+            kind: 'NonNullType',
+            type: { kind: 'NamedType', name: { kind: 'Name', value: 'String' } },
+          },
+          directives: [],
+        },
+        {
+          kind: 'FieldDefinition',
+          name: { kind: 'Name', value: 'prefectureKana' },
+          arguments: [],
+          type: {
+            kind: 'NonNullType',
+            type: { kind: 'NamedType', name: { kind: 'Name', value: 'String' } },
+          },
+          directives: [],
+        },
+        {
+          kind: 'FieldDefinition',
+          name: { kind: 'Name', value: 'cityName' },
+          arguments: [],
+          type: {
+            kind: 'NonNullType',
+            type: { kind: 'NamedType', name: { kind: 'Name', value: 'String' } },
+          },
+          directives: [],
+        },
+        {
+          kind: 'FieldDefinition',
+          name: { kind: 'Name', value: 'cityKana' },
+          arguments: [],
+          type: {
+            kind: 'NonNullType',
+            type: { kind: 'NamedType', name: { kind: 'Name', value: 'String' } },
+          },
+          directives: [],
+        },
+        {
+          kind: 'FieldDefinition',
+          name: { kind: 'Name', value: 'chomeList' },
+          arguments: [],
+          type: {
+            kind: 'NonNullType',
+            type: {
+              kind: 'ListType',
+              type: {
+                kind: 'NonNullType',
+                type: { kind: 'NamedType', name: { kind: 'Name', value: 'String' } },
+              },
+            },
+          },
+          directives: [],
+        },
+        {
+          kind: 'FieldDefinition',
+          name: { kind: 'Name', value: 'difficultyNotOnlyZipAndBanti' },
+          arguments: [],
+          type: {
+            kind: 'NonNullType',
+            type: { kind: 'NamedType', name: { kind: 'Name', value: 'Boolean' } },
+          },
+          directives: [],
+        },
+        {
+          kind: 'FieldDefinition',
+          name: { kind: 'Name', value: 'difficultyNeedKoaza' },
+          arguments: [],
+          type: {
+            kind: 'NonNullType',
+            type: { kind: 'NamedType', name: { kind: 'Name', value: 'Boolean' } },
+          },
+          directives: [],
+        },
+        {
+          kind: 'FieldDefinition',
+          name: { kind: 'Name', value: 'difficultyNeedChome' },
+          arguments: [],
+          type: {
+            kind: 'NonNullType',
+            type: { kind: 'NamedType', name: { kind: 'Name', value: 'Boolean' } },
+          },
+          directives: [],
+        },
+        {
+          kind: 'FieldDefinition',
+          name: { kind: 'Name', value: 'difficultyDoubleMeaningZipArea' },
+          arguments: [],
+          type: {
+            kind: 'NonNullType',
+            type: { kind: 'NamedType', name: { kind: 'Name', value: 'Boolean' } },
+          },
+          directives: [],
+        },
+        {
+          kind: 'FieldDefinition',
+          name: { kind: 'Name', value: 'createdDateTime' },
+          arguments: [],
+          type: {
+            kind: 'NonNullType',
+            type: { kind: 'NamedType', name: { kind: 'Name', value: 'DateTimeISO' } },
+          },
+          directives: [],
+        },
+        {
+          kind: 'FieldDefinition',
+          name: { kind: 'Name', value: 'updateDateTime' },
+          arguments: [],
+          type: {
+            kind: 'NonNullType',
+            type: { kind: 'NamedType', name: { kind: 'Name', value: 'DateTimeISO' } },
+          },
+          directives: [],
+        },
+        {
+          kind: 'FieldDefinition',
+          name: { kind: 'Name', value: 'updateReason' },
+          arguments: [],
+          type: {
+            kind: 'NonNullType',
+            type: { kind: 'NamedType', name: { kind: 'Name', value: 'UpdateReason' } },
+          },
+          directives: [],
+        },
+      ],
+    },
+    {
       kind: 'SchemaDefinition',
       operationTypes: [
         {
           kind: 'OperationTypeDefinition',
           type: { kind: 'NamedType', name: { kind: 'Name', value: 'Query' } },
           operation: 'query',
-        },
-        {
-          kind: 'OperationTypeDefinition',
-          type: { kind: 'NamedType', name: { kind: 'Name', value: 'Mutation' } },
-          operation: 'mutation',
         },
       ],
     },

@@ -4,7 +4,7 @@ import type { CodegenConfig } from '@graphql-codegen/cli'
 const warnText = `/*
  * WARN: このファイルは生成ごとに上書き
  */
-import type { MyContext } from './MyContext.ts'
+import type { IncomingRequestContext } from './contexts.ts'
 `
 
 const config: CodegenConfig = {
@@ -24,7 +24,7 @@ const config: CodegenConfig = {
         object: '*',
         union: '',
         interface: '',
-        enum: '',
+        enum: '*',
       },
       mergeSchema: false,
 
@@ -43,8 +43,8 @@ const config: CodegenConfig = {
         addUnderscoreToArgsType: true,
         avoidOptionals: true,
         useTypeImports: true,
-        // contextType: './my-types#MyContext',
-        contextType: 'MyContext',
+        constEnums: true,
+        contextType: 'IncomingRequestContext',
         // fieldContextTypes: ['MyType.foo#CustomContextType', 'MyType.bar#./my-file#ContextTypeOne']
         // directiveContextTypes: ['myCustomDirectiveName#./my-file#CustomContextExtender']
       },

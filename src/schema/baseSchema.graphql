@@ -1,5 +1,4 @@
 type Query
-type Mutation
 
 # https://graphql.org/learn/schema/#scalar-types
 

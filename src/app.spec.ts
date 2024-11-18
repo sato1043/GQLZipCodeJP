@@ -4,8 +4,8 @@ import app from './app.ts'
 import conf from './conf.ts'
 
 describe('GET /', () => {
-  it('returns 404 with a valid x-api-key', () => {
-    return request(app)
+  it('returns 404 with a valid x-api-key', async () => {
+    await request(app)
       .get('/')
       .set({
         Origin: conf.app.origin,
@@ -16,8 +16,8 @@ describe('GET /', () => {
 })
 
 describe('GET /api', () => {
-  it('returns 404 with a valid x-api-key', () => {
-    return request(app)
+  it('returns 404 with a valid x-api-key', async () => {
+    await request(app)
       .get('/api')
       .set({
         Origin: conf.app.origin,
@@ -28,8 +28,8 @@ describe('GET /api', () => {
 })
 
 describe('GET /api/v1', () => {
-  it('returns 404 with a valid x-api-key', () => {
-    return request(app)
+  it('returns 404 with a valid x-api-key', async () => {
+    await request(app)
       .get('/api/v1')
       .set({
         Origin: conf.app.origin,
