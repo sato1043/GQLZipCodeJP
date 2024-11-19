@@ -3,6 +3,8 @@
 
 NOTE: **2024.11 別件で使用するため公開見合わせ中。後日調整の予定**
 
+GraphQL Yoga と graphql-codegen を使った、ESMのための node.js プロジェクトテンプレート。
+
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 CONTENTS;
