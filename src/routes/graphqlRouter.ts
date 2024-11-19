@@ -14,7 +14,7 @@ import conf from './../conf.ts'
 export const yoga = createYoga<{}, IncomingRequestContext>({
   landingPage: false,
   schema: createSchema<IncomingRequestContext>({ typeDefs, resolvers }),
-  graphqlEndpoint: '/api/v1/graphql',
+  graphqlEndpoint: conf.endpoint.graphql,
   ...(!conf.isDevelopment
     ? undefined
     : {

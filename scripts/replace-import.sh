@@ -13,6 +13,19 @@ for f in $(find $DIR -name "*.ts"); do
     sed -i '' -E "s/(import[[:space:]]+.*[[:space:]]'\..*[^.][^t][^s])'/\1.ts'/" $f
   fi
 done
-echo import checked $checked file\(s\), fixed $count file\(s\)
+echo Import checked $checked file\(s\), Fixed $count file\(s\)
+
+checked=0
+count=0
+for f in $(find $DIR -name "*.ts"); do
+  checked=$(($checked + 1))
+  grep -qE "export\s+.*\s+from\s+'\..*[^.][^t][^s]'" $f
+  if [ $? -eq 0 ]; then
+    count=$(($count + 1))
+    sed -i '' -E "s/(export[[:space:]]+.*[[:space:]]'\..*[^.][^t][^s])'/\1.ts'/" $f
+  fi
+done
+echo Export checked $checked file\(s\), Fixed $count file\(s\)
+
 exit 0
 

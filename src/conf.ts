@@ -59,6 +59,11 @@ const conf = {
     certCrt: `scripts/crt@${host}/${host}.crt`,
   },
 
+  endpoint: {
+    api: process.env.ENDPOINT_API || '/api/v1',
+    graphql: process.env.ENDPOINT_GRAPHQL || '/api/v1/graphql',
+  },
+
   apikey: {
     passPhrase: process.env.APIKEY_PASSPHRASE || '',
     salt: process.env.APIKEY_SALT || '',

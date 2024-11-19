@@ -1,3 +1,7 @@
+/*
+ * graphql codegen: Guide: GraphQL Yoga / Apollo Server with Server Preset
+ *   https://the-guild.dev/graphql/codegen/docs/guides/graphql-server-apollo-yoga-with-server-preset
+ */
 import { defineConfig } from '@eddeee888/gcg-typescript-resolver-files'
 import type { CodegenConfig } from '@graphql-codegen/cli'
 
@@ -9,6 +13,7 @@ import type { IncomingRequestContext } from './contexts.ts'
 
 const config: CodegenConfig = {
   schema: 'src/schema/**/*.graphql',
+  ignoreNoDocuments: true,
   generates: {
     'src/schema': defineConfig({
       // The following config is designed to work with GraphQL Yoga's File uploads feature
@@ -52,6 +57,14 @@ const config: CodegenConfig = {
         './types.generated.ts': { content: warnText },
       },
     }),
+
+    './src/client/': {
+      preset: 'client',
+      documents: ['src/**/*.spec.ts'],
+      config: {
+        useTypeImports: true,
+      },
+    },
   },
 }
 

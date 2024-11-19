@@ -1,6 +1,8 @@
 import request from 'supertest'
 
 import app from '../app.ts'
+import { graphql } from '../client/gql.ts'
+import { executeOperation } from '../utils/spec.util.ts'
 
 describe('GET /api/v1/graphql', () => {
   it('returns 400 without origin', async () => {
@@ -47,5 +49,25 @@ describe('GET /api/v1/graphql', () => {
         'X-API-Key': process.env.TEST_APIKEY,
       })
       .expect(200)
+  })
+})
+
+describe('Query townArea', () => {
+  it('returns postalCode', async () => {
+    const queryTownArea = graphql(`
+      query TownArea ($postalCode: PostalCode!) {
+        townArea (postalCode: $postalCode) {
+          postalCode
+          updateDateTime
+        }
+      }
+    `)
+    const [result, response] = await executeOperation(queryTownArea, {
+      postalCode: '100-0001',
+    })
+
+    console.log(result)
+    expect(response.status).toBe(200)
+    expect(result.data?.townArea.postalCode).toEqual('1000001')
   })
 })

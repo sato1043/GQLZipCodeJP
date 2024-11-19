@@ -128,7 +128,13 @@
   },
   "overrides": [
     {
-      "include": ["src/schema/types.generated.ts"], // 注意; graphql-codegenの生成物のための制約緩和
+      "include": [
+        // 注意; graphql-codegenの生成物のための制約緩和（フォーマットはかけてある）
+        "src/schema/types.generated.ts",
+        "src/client/fragment-masking.ts",
+        "src/client/graphql.ts",
+        "src/client/gql.ts"
+      ],
       "linter": {
         "rules": {
           "complexity": {
@@ -143,39 +149,6 @@
           },
           "style": {
             "useConsistentArrayType": "off"
-          }
-        }
-      }
-    },
-    {
-      "include": ["**/*.ts", "**/*.tsx", "**/*.mts", "**/*.cts"],
-      "linter": {
-        "rules": {
-          "correctness": {
-            "noConstAssign": "off",
-            "noGlobalObjectCalls": "off",
-            "noInvalidConstructorSuper": "off",
-            "noInvalidNewBuiltin": "off",
-            "noNewSymbol": "off",
-            "noSetterReturn": "off",
-            "noUndeclaredVariables": "off",
-            "noUnreachable": "off",
-            "noUnreachableSuper": "off"
-          },
-          "style": {
-            "noArguments": "error",
-            "noVar": "error",
-            "useConst": "error"
-          },
-          "suspicious": {
-            "noDuplicateClassMembers": "off",
-            "noDuplicateObjectKeys": "off",
-            "noDuplicateParameters": "off",
-            "noFunctionAssign": "off",
-            "noImportAssign": "off",
-            "noRedeclare": "off",
-            "noUnsafeNegation": "off",
-            "useGetterReturn": "off"
           }
         }
       }
