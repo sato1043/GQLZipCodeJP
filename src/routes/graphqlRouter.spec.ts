@@ -66,7 +66,6 @@ describe('Query townArea', () => {
       postalCode: '100-0001',
     })
 
-    console.log(result)
     expect(response.status).toBe(200)
     expect(result.data?.townArea.postalCode).toEqual('1000001')
   })
