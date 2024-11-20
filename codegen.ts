@@ -65,6 +65,26 @@ const config: CodegenConfig = {
         useTypeImports: true,
       },
     },
+
+    './src/client/validation.ts': {
+      plugins: ['typescript-validation-schema'],
+      documents: ['src/**/*.spec.ts'],
+      config: {
+        importFrom: './graphql.ts',
+        schema: 'yup',
+        scalars: {
+          ID: 'string', // https://github.com/Code-Hex/graphql-codegen-typescript-validation-schema/pull/375
+          PostalCode: 'string',
+        },
+        defaultScalarSchema: 'yup.unknown()',
+        scalarSchemas: {
+          Date: 'yup.date()',
+          Email: 'yup.string().trim().email()',
+          PostalCode: 'yup.string().trim().matches(/^[0-9]{3}-[0-9]{4}$/)',
+        },
+        notAllowEmptyString: true,
+      },
+    },
   },
 }
 

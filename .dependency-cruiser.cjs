@@ -243,6 +243,7 @@ module.exports = {
       path: [
         'express-list-endpoints',
         '@graphql-yoga/render-graphiql',
+        'yup',
       ],
     },
 

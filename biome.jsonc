@@ -133,7 +133,8 @@
         "src/schema/types.generated.ts",
         "src/client/fragment-masking.ts",
         "src/client/graphql.ts",
-        "src/client/gql.ts"
+        "src/client/gql.ts",
+        "src/client/yup.ts"
       ],
       "linter": {
         "rules": {
