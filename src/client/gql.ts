@@ -14,7 +14,7 @@ import * as types from './graphql.ts'
  * Learn more about it here: https://the-guild.dev/graphql/codegen/plugins/presets/preset-client#reducing-bundle-size
  */
 const documents = {
-  '\n      query TownArea ($postalCode: PostalCode!) {\n        townArea (postalCode: $postalCode) {\n          postalCode\n          updateDateTime\n        }\n      }\n    ':
+  '\n      query TownArea ($postalCode: PostalCode!) {\n        townArea (postalCode: $postalCode) {\n          postalCode\n        }\n      }\n    ':
     types.TownAreaDocument,
 }
 
@@ -36,8 +36,8 @@ export function graphql(source: string): unknown
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(
-  source: '\n      query TownArea ($postalCode: PostalCode!) {\n        townArea (postalCode: $postalCode) {\n          postalCode\n          updateDateTime\n        }\n      }\n    ',
-): (typeof documents)['\n      query TownArea ($postalCode: PostalCode!) {\n        townArea (postalCode: $postalCode) {\n          postalCode\n          updateDateTime\n        }\n      }\n    ']
+  source: '\n      query TownArea ($postalCode: PostalCode!) {\n        townArea (postalCode: $postalCode) {\n          postalCode\n        }\n      }\n    ',
+): (typeof documents)['\n      query TownArea ($postalCode: PostalCode!) {\n        townArea (postalCode: $postalCode) {\n          postalCode\n        }\n      }\n    ']
 
 export function graphql(source: string) {
   return (documents as any)[source] ?? {}

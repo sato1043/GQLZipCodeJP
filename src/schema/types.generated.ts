@@ -23,7 +23,6 @@ export type MakeEmpty<T extends { [key: string]: unknown }, K extends keyof T> =
 export type Incremental<T> =
   | T
   | { [P in keyof T]?: P extends ' $fragmentName' | '__typename' ? T[P] : never }
-export type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>
 export type RequireFields<T, K extends keyof T> = Omit<T, K> & {
   [P in K]-?: NonNullable<T[P]>
 }
@@ -32,7 +31,7 @@ export type EnumResolverSignature<T, AllowedValues = any> = {
 }
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
-  ID: { input: string; output: string | number }
+  ID: { input: string; output: string }
   String: { input: string; output: string }
   Boolean: { input: boolean; output: boolean }
   Int: { input: number; output: number }
@@ -48,9 +47,17 @@ export type Scalars = {
   Void: { input: void; output: void }
 }
 
+export type Meta = {
+  __typename?: 'Meta'
+  converted: Maybe<Scalars['DateTimeISO']['output']>
+  count: Maybe<Scalars['Int']['output']>
+  updated: Maybe<Scalars['DateTimeISO']['output']>
+}
+
 export type Query = {
   __typename?: 'Query'
-  townArea: TownArea
+  meta: Meta
+  townArea: Array<TownArea>
 }
 
 export type Query_townAreaArgs = {
@@ -62,19 +69,15 @@ export type TownArea = {
   chomeList: Array<Scalars['String']['output']>
   cityKana: Scalars['String']['output']
   cityName: Scalars['String']['output']
-  createdDateTime: Scalars['DateTimeISO']['output']
-  difficultyDoubleMeaningZipArea: Scalars['Boolean']['output']
+  difficultyDoubleMeaningTownArea: Scalars['Boolean']['output']
   difficultyNeedChome: Scalars['Boolean']['output']
   difficultyNeedKoaza: Scalars['Boolean']['output']
   difficultyNotOnlyZipAndBanti: Scalars['Boolean']['output']
-  id: Scalars['ID']['output']
-  kana: Scalars['String']['output']
-  name: Scalars['String']['output']
   postalCode: Scalars['PostalCode']['output']
   prefectureKana: Scalars['String']['output']
   prefectureName: Scalars['String']['output']
-  updateDateTime: Scalars['DateTimeISO']['output']
-  updateReason: UpdateReason
+  townAreaKana: Scalars['String']['output']
+  townAreaName: Scalars['String']['output']
 }
 
 export type UpdateReason =
@@ -174,15 +177,14 @@ export type ResolversTypes = {
   Currency: ResolverTypeWrapper<Scalars['Currency']['output']>
   DateTimeISO: ResolverTypeWrapper<Scalars['DateTimeISO']['output']>
   EmailAddress: ResolverTypeWrapper<Scalars['EmailAddress']['output']>
+  Meta: ResolverTypeWrapper<Meta>
+  Int: ResolverTypeWrapper<Scalars['Int']['output']>
   PhoneNumber: ResolverTypeWrapper<Scalars['PhoneNumber']['output']>
   PostalCode: ResolverTypeWrapper<Scalars['PostalCode']['output']>
   Query: ResolverTypeWrapper<{}>
-  TownArea: ResolverTypeWrapper<
-    Omit<TownArea, 'updateReason'> & { updateReason: ResolversTypes['UpdateReason'] }
-  >
+  TownArea: ResolverTypeWrapper<TownArea>
   String: ResolverTypeWrapper<Scalars['String']['output']>
   Boolean: ResolverTypeWrapper<Scalars['Boolean']['output']>
-  ID: ResolverTypeWrapper<Scalars['ID']['output']>
   URL: ResolverTypeWrapper<Scalars['URL']['output']>
   UUID: ResolverTypeWrapper<Scalars['UUID']['output']>
   UpdateReason: ResolverTypeWrapper<
@@ -203,13 +205,14 @@ export type ResolversParentTypes = {
   Currency: Scalars['Currency']['output']
   DateTimeISO: Scalars['DateTimeISO']['output']
   EmailAddress: Scalars['EmailAddress']['output']
+  Meta: Meta
+  Int: Scalars['Int']['output']
   PhoneNumber: Scalars['PhoneNumber']['output']
   PostalCode: Scalars['PostalCode']['output']
   Query: {}
   TownArea: TownArea
   String: Scalars['String']['output']
   Boolean: Scalars['Boolean']['output']
-  ID: Scalars['ID']['output']
   URL: Scalars['URL']['output']
   UUID: Scalars['UUID']['output']
   Void: Scalars['Void']['output']
@@ -235,6 +238,16 @@ export interface EmailAddressScalarConfig
   name: 'EmailAddress'
 }
 
+export type MetaResolvers<
+  ContextType = IncomingRequestContext,
+  ParentType extends ResolversParentTypes['Meta'] = ResolversParentTypes['Meta'],
+> = {
+  converted: Resolver<Maybe<ResolversTypes['DateTimeISO']>, ParentType, ContextType>
+  count: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>
+  updated: Resolver<Maybe<ResolversTypes['DateTimeISO']>, ParentType, ContextType>
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
+}
+
 export interface PhoneNumberScalarConfig
   extends GraphQLScalarTypeConfig<ResolversTypes['PhoneNumber'], any> {
   name: 'PhoneNumber'
@@ -249,8 +262,9 @@ export type QueryResolvers<
   ContextType = IncomingRequestContext,
   ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query'],
 > = {
+  meta: Resolver<ResolversTypes['Meta'], ParentType, ContextType>
   townArea: Resolver<
-    ResolversTypes['TownArea'],
+    Array<ResolversTypes['TownArea']>,
     ParentType,
     ContextType,
     RequireFields<Query_townAreaArgs, 'postalCode'>
@@ -264,8 +278,7 @@ export type TownAreaResolvers<
   chomeList: Resolver<Array<ResolversTypes['String']>, ParentType, ContextType>
   cityKana: Resolver<ResolversTypes['String'], ParentType, ContextType>
   cityName: Resolver<ResolversTypes['String'], ParentType, ContextType>
-  createdDateTime: Resolver<ResolversTypes['DateTimeISO'], ParentType, ContextType>
-  difficultyDoubleMeaningZipArea: Resolver<
+  difficultyDoubleMeaningTownArea: Resolver<
     ResolversTypes['Boolean'],
     ParentType,
     ContextType
@@ -277,14 +290,11 @@ export type TownAreaResolvers<
     ParentType,
     ContextType
   >
-  id: Resolver<ResolversTypes['ID'], ParentType, ContextType>
-  kana: Resolver<ResolversTypes['String'], ParentType, ContextType>
-  name: Resolver<ResolversTypes['String'], ParentType, ContextType>
   postalCode: Resolver<ResolversTypes['PostalCode'], ParentType, ContextType>
   prefectureKana: Resolver<ResolversTypes['String'], ParentType, ContextType>
   prefectureName: Resolver<ResolversTypes['String'], ParentType, ContextType>
-  updateDateTime: Resolver<ResolversTypes['DateTimeISO'], ParentType, ContextType>
-  updateReason: Resolver<ResolversTypes['UpdateReason'], ParentType, ContextType>
+  townAreaKana: Resolver<ResolversTypes['String'], ParentType, ContextType>
+  townAreaName: Resolver<ResolversTypes['String'], ParentType, ContextType>
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
 }
 
@@ -321,6 +331,7 @@ export type Resolvers<ContextType = IncomingRequestContext> = {
   Currency: GraphQLScalarType
   DateTimeISO: GraphQLScalarType
   EmailAddress: GraphQLScalarType
+  Meta: MetaResolvers<ContextType>
   PhoneNumber: GraphQLScalarType
   PostalCode: GraphQLScalarType
   Query: QueryResolvers<ContextType>

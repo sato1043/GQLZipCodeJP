@@ -49,7 +49,7 @@ export type TownAreaQueryVariables = Exact<{
 
 export type TownAreaQuery = {
   __typename?: 'Query'
-  townArea: { __typename?: 'TownArea'; postalCode: any; updateDateTime: any }
+  townArea: Array<{ __typename?: 'TownArea'; postalCode: any }>
 }
 
 export const TownAreaDocument = {
@@ -86,7 +86,6 @@ export const TownAreaDocument = {
               kind: 'SelectionSet',
               selections: [
                 { kind: 'Field', name: { kind: 'Name', value: 'postalCode' } },
-                { kind: 'Field', name: { kind: 'Name', value: 'updateDateTime' } },
               ],
             },
           },

@@ -8,6 +8,16 @@ export const typeDefs = {
       fields: [
         {
           kind: 'FieldDefinition',
+          name: { kind: 'Name', value: 'meta' },
+          arguments: [],
+          type: {
+            kind: 'NonNullType',
+            type: { kind: 'NamedType', name: { kind: 'Name', value: 'Meta' } },
+          },
+          directives: [],
+        },
+        {
+          kind: 'FieldDefinition',
           name: { kind: 'Name', value: 'townArea' },
           arguments: [
             {
@@ -22,7 +32,13 @@ export const typeDefs = {
           ],
           type: {
             kind: 'NonNullType',
-            type: { kind: 'NamedType', name: { kind: 'Name', value: 'TownArea' } },
+            type: {
+              kind: 'ListType',
+              type: {
+                kind: 'NonNullType',
+                type: { kind: 'NamedType', name: { kind: 'Name', value: 'TownArea' } },
+              },
+            },
           },
           directives: [],
         },
@@ -125,36 +141,6 @@ export const typeDefs = {
       fields: [
         {
           kind: 'FieldDefinition',
-          name: { kind: 'Name', value: 'id' },
-          arguments: [],
-          type: {
-            kind: 'NonNullType',
-            type: { kind: 'NamedType', name: { kind: 'Name', value: 'ID' } },
-          },
-          directives: [],
-        },
-        {
-          kind: 'FieldDefinition',
-          name: { kind: 'Name', value: 'name' },
-          arguments: [],
-          type: {
-            kind: 'NonNullType',
-            type: { kind: 'NamedType', name: { kind: 'Name', value: 'String' } },
-          },
-          directives: [],
-        },
-        {
-          kind: 'FieldDefinition',
-          name: { kind: 'Name', value: 'kana' },
-          arguments: [],
-          type: {
-            kind: 'NonNullType',
-            type: { kind: 'NamedType', name: { kind: 'Name', value: 'String' } },
-          },
-          directives: [],
-        },
-        {
-          kind: 'FieldDefinition',
           name: { kind: 'Name', value: 'postalCode' },
           arguments: [],
           type: {
@@ -196,6 +182,26 @@ export const typeDefs = {
         {
           kind: 'FieldDefinition',
           name: { kind: 'Name', value: 'cityKana' },
+          arguments: [],
+          type: {
+            kind: 'NonNullType',
+            type: { kind: 'NamedType', name: { kind: 'Name', value: 'String' } },
+          },
+          directives: [],
+        },
+        {
+          kind: 'FieldDefinition',
+          name: { kind: 'Name', value: 'townAreaName' },
+          arguments: [],
+          type: {
+            kind: 'NonNullType',
+            type: { kind: 'NamedType', name: { kind: 'Name', value: 'String' } },
+          },
+          directives: [],
+        },
+        {
+          kind: 'FieldDefinition',
+          name: { kind: 'Name', value: 'townAreaKana' },
           arguments: [],
           type: {
             kind: 'NonNullType',
@@ -251,7 +257,7 @@ export const typeDefs = {
         },
         {
           kind: 'FieldDefinition',
-          name: { kind: 'Name', value: 'difficultyDoubleMeaningZipArea' },
+          name: { kind: 'Name', value: 'difficultyDoubleMeaningTownArea' },
           arguments: [],
           type: {
             kind: 'NonNullType',
@@ -259,34 +265,33 @@ export const typeDefs = {
           },
           directives: [],
         },
+      ],
+    },
+    {
+      kind: 'ObjectTypeDefinition',
+      name: { kind: 'Name', value: 'Meta' },
+      interfaces: [],
+      directives: [],
+      fields: [
         {
           kind: 'FieldDefinition',
-          name: { kind: 'Name', value: 'createdDateTime' },
+          name: { kind: 'Name', value: 'count' },
           arguments: [],
-          type: {
-            kind: 'NonNullType',
-            type: { kind: 'NamedType', name: { kind: 'Name', value: 'DateTimeISO' } },
-          },
+          type: { kind: 'NamedType', name: { kind: 'Name', value: 'Int' } },
           directives: [],
         },
         {
           kind: 'FieldDefinition',
-          name: { kind: 'Name', value: 'updateDateTime' },
+          name: { kind: 'Name', value: 'updated' },
           arguments: [],
-          type: {
-            kind: 'NonNullType',
-            type: { kind: 'NamedType', name: { kind: 'Name', value: 'DateTimeISO' } },
-          },
+          type: { kind: 'NamedType', name: { kind: 'Name', value: 'DateTimeISO' } },
           directives: [],
         },
         {
           kind: 'FieldDefinition',
-          name: { kind: 'Name', value: 'updateReason' },
+          name: { kind: 'Name', value: 'converted' },
           arguments: [],
-          type: {
-            kind: 'NonNullType',
-            type: { kind: 'NamedType', name: { kind: 'Name', value: 'UpdateReason' } },
-          },
+          type: { kind: 'NamedType', name: { kind: 'Name', value: 'DateTimeISO' } },
           directives: [],
         },
       ],

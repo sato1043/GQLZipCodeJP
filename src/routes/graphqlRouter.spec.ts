@@ -58,7 +58,6 @@ describe('Query townArea', () => {
       query TownArea ($postalCode: PostalCode!) {
         townArea (postalCode: $postalCode) {
           postalCode
-          updateDateTime
         }
       }
     `)
@@ -67,6 +66,6 @@ describe('Query townArea', () => {
     })
 
     expect(response.status).toBe(200)
-    expect(result.data?.townArea.postalCode).toEqual('1000001')
+    expect(result.data?.townArea[0].postalCode).toEqual('100-0001')
   })
 })

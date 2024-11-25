@@ -3,7 +3,7 @@ import express from 'express'
 import { createSchema, createYoga } from 'graphql-yoga'
 import helmet from 'helmet'
 
-import { townAreaDictionary } from '../schema/contexts.ts'
+import { context } from '../schema/contexts.ts'
 import type { IncomingRequestContext } from '../schema/contexts.ts'
 import { resolvers } from '../schema/resolvers.generated.ts'
 import { typeDefs } from '../schema/typeDefs.generated.ts'
@@ -21,7 +21,7 @@ export const yoga = createYoga<{}, IncomingRequestContext>({
         graphiql: true, // (viewer) https://the-guild.dev/graphql/yoga-server/docs/features/graphiql
         renderGraphiQL: renderGraphiQL,
       }),
-  context: () => ({ townAreaDictionary }),
+  context,
 })
 
 const graphqlRouter = express.Router()

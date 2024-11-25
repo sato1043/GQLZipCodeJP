@@ -17,24 +17,27 @@ enum UpdateReason {
 }
 
 type TownArea {
-  id: ID!
-  name: String!
-  kana: String!
   postalCode: PostalCode! # "JP", "\d{3}-\d{4}"
   prefectureName: String!
   prefectureKana: String!
   cityName: String!
   cityKana: String!
+  townAreaName: String!
+  townAreaKana: String!
   chomeList: [String!]!
   difficultyNotOnlyZipAndBanti: Boolean!
   difficultyNeedKoaza: Boolean!
   difficultyNeedChome: Boolean!
-  difficultyDoubleMeaningZipArea: Boolean!
-  createdDateTime: DateTimeISO!
-  updateDateTime: DateTimeISO!
-  updateReason: UpdateReason!
+  difficultyDoubleMeaningTownArea: Boolean!
+}
+
+type Meta {
+  count: Int
+  updated: DateTimeISO
+  converted: DateTimeISO
 }
 
 extend type Query {
-  townArea(postalCode: PostalCode!): TownArea!
+  meta: Meta!
+  townArea(postalCode: PostalCode!): [TownArea!]!
 }
