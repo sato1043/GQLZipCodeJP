@@ -155,6 +155,12 @@
       }
     },
     {
+      "include": ["scripts/postal-json/postal.json"],
+      "organizeImports": { "enabled": false },
+      "linter": { "enabled": false },
+      "formatter": { "enabled": false }
+    },
+    {
       "include": ["**/*.ts", "**/*.tsx", "**/*.mts", "**/*.cts"],
       "linter": {
         "rules": {
